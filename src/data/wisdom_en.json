@@ -1,0 +1,128 @@
+[
+  {
+    "id": "b01",
+    "title": "The Masnavi",
+    "author": "Mevlana Jalal ad-Din Rumi",
+    "tradition": "Sufism",
+    "emoji": "🕯️",
+    "color": "gold",
+    "passages": [
+      { "id": "b01-01", "theme": "Love", "ref": "Book I", "text": "Be as in love as you can be. Love is existence itself; wherever you flee from it, you flee from yourself." },
+      { "id": "b01-02", "theme": "Silence", "ref": "Book II", "text": "When words fall silent, the heart begins to speak. Listen to the deep stillness within you; the answer is already there." },
+      { "id": "b01-03", "theme": "The Wound", "ref": "Book III", "text": "Enter through the crack of light in the wound. The broken place is where the light meets you." },
+      { "id": "b01-04", "theme": "Journey", "ref": "Book I", "text": "You are a guest in this world, yet your heart is searching for a home. Look for it not outside, but within." },
+      { "id": "b01-05", "theme": "Change", "ref": "Book IV", "text": "Yesterday is gone, tomorrow has not arrived. This moment is the only truth in your hands; hold it lightly, but completely." },
+      { "id": "b01-06", "theme": "Patience", "ref": "Book V", "text": "The earth carries the seed patiently, and then it becomes a flower. The silence within you will also bloom; do not hurry it." },
+      { "id": "b01-07", "theme": "Truth", "ref": "Book II", "text": "Do not search for truth far away; it stands behind the eye that is looking, in your breath, in this very line." },
+      { "id": "b01-08", "theme": "Return", "ref": "Book VI", "text": "Every parting is the beginning of a reunion. What you think you have lost may be the very path that returns you to yourself." }
+    ]
+  },
+  {
+    "id": "b02",
+    "title": "Words from the Divan",
+    "author": "Yunus Emre",
+    "tradition": "Anatolian Sufism",
+    "emoji": "🌾",
+    "color": "gold",
+    "passages": [
+      { "id": "b02-01", "theme": "The Heart", "ref": "Poem 12", "text": "The heart is the throne of the Beloved; the Beloved looks into the heart. Walk gently — do not wound the very thing you carry." },
+      { "id": "b02-02", "theme": "Love", "ref": "Poem 27", "text": "Know what you love, but do not become a burden to it. True love keeps an open hand, not a clenched one." },
+      { "id": "b02-03", "theme": "Humility", "ref": "Poem 5", "text": "Whoever looks down from on high ends up alone at the height. Be low like the earth, so that every seed may grow upon you." },
+      { "id": "b02-04", "theme": "Impermanence", "ref": "Poem 18", "text": "This world is a bridge — cross it, but do not build a house on it. Tie your heart to what does not pass away." },
+      { "id": "b02-05", "theme": "Oneness", "ref": "Poem 33", "text": "Whoever cannot look at all peoples with one eye is, in truth, a rebel, however learned they may seem. Set aside division, and look at the whole." },
+      { "id": "b02-06", "theme": "Patience", "ref": "Poem 9", "text": "Nothing is harvested before it ripens, nothing is eaten before it is cooked. The ripeness within you, too, will come in its own time." },
+      { "id": "b02-07", "theme": "Truth", "ref": "Poem 41", "text": "Knowledge is to know — and to know is to know yourself. If you do not know yourself, what is the use of all your reading?" },
+      { "id": "b02-08", "theme": "Stillness", "ref": "Poem 22", "text": "The moment you stop searching, what you sought may feel as if it had been beside you all along. Stop. Take a breath." }
+    ]
+  },
+  {
+    "id": "b03",
+    "title": "Tao Te Ching",
+    "author": "Lao Tzu",
+    "tradition": "Taoism",
+    "emoji": "☯",
+    "color": "teal",
+    "passages": [
+      { "id": "b03-01", "theme": "The Way", "ref": "Chapter 1", "text": "The Tao that can be named is not the eternal Tao. Stop trying to grasp it; simply be within the flow." },
+      { "id": "b03-02", "theme": "Non-Action", "ref": "Chapter 2", "text": "The sage acts without forcing, teaches without speaking. As water wears down stone, softness overcomes hardness." },
+      { "id": "b03-03", "theme": "Water", "ref": "Chapter 8", "text": "The highest good is like water; it benefits all things without contending. It flows to the places others avoid, and so it is close to the Tao." },
+      { "id": "b03-04", "theme": "Emptiness", "ref": "Chapter 11", "text": "A vessel is useful because of the emptiness within it. Look at the emptiness within yourself the same way; it is the source of fullness." },
+      { "id": "b03-05", "theme": "Simplicity", "ref": "Chapter 19", "text": "Set aside ornament, embrace simplicity. Lessen your needs, soften your wants; then your natural state returns." },
+      { "id": "b03-06", "theme": "Balance", "ref": "Chapter 22", "text": "The bent becomes whole, the crooked becomes straight. The little is gained, the much is bewildering." },
+      { "id": "b03-07", "theme": "Quiet", "ref": "Chapter 23", "text": "Nature speaks little, and that is the lesson: a violent wind does not last all morning, a sudden rain does not last all day." },
+      { "id": "b03-08", "theme": "Self-Knowledge", "ref": "Chapter 33", "text": "Knowing others is wisdom; knowing yourself is enlightenment. Mastering others takes strength; mastering yourself takes true power." }
+    ]
+  },
+  {
+    "id": "b04",
+    "title": "Dhammapada — The Path of Truth",
+    "author": "The Teachings of the Buddha",
+    "tradition": "Buddhism",
+    "emoji": "🪷",
+    "color": "purple",
+    "passages": [
+      { "id": "b04-01", "theme": "Mind", "ref": "Chapter 1", "text": "All that we are is shaped by the mind. Speak or act with a pure mind, and happiness follows like a shadow that never leaves." },
+      { "id": "b04-02", "theme": "Anger", "ref": "Chapter 17", "text": "Let go of anger with love, not with anger. You do not put out a spark by throwing another flame on it." },
+      { "id": "b04-03", "theme": "The Present", "ref": "Chapter 8", "text": "Do not chase after the past, do not worry about the future. Life is found in this moment, in this breath." },
+      { "id": "b04-04", "theme": "Awareness", "ref": "Chapter 2", "text": "Awareness is the path to the deathless; carelessness is the path to death. The watchful never die; the careless are already as if dead." },
+      { "id": "b04-05", "theme": "Letting Go", "ref": "Chapter 24", "text": "You build a raft to cross the river, but once across, you do not carry it on your back. Do not mistake the means for the end." },
+      { "id": "b04-06", "theme": "Compassion", "ref": "Chapter 10", "text": "All beings fear suffering, all beings love life. See yourself in others; neither harm, nor cause harm." },
+      { "id": "b04-07", "theme": "Inner Victory", "ref": "Chapter 8", "text": "Though one may conquer a thousand on the battlefield, the one who conquers themselves wins the greater victory." },
+      { "id": "b04-08", "theme": "Drop by Drop", "ref": "Chapter 9", "text": "A water jar is filled drop by drop. The wise person fills with goodness, gathered little by little." }
+    ]
+  },
+  {
+    "id": "b05",
+    "title": "Meditations",
+    "author": "Marcus Aurelius",
+    "tradition": "Stoicism",
+    "emoji": "🏛️",
+    "color": "sand",
+    "passages": [
+      { "id": "b05-01", "theme": "Control", "ref": "Book II", "text": "Distinguish between what is in your power and what is not. Your peace is in direct proportion to how clearly you make this distinction." },
+      { "id": "b05-02", "theme": "Morning", "ref": "Book V", "text": "When you wake, tell yourself: today I will meet people who are rude, ungrateful, arrogant. But I, too, stand under the same sun as they do." },
+      { "id": "b05-03", "theme": "Perception", "ref": "Book IV", "text": "External things cannot touch your soul; your distress arises from your own judgment about them." },
+      { "id": "b05-04", "theme": "Mortality", "ref": "Book VI", "text": "Do not act as though you had ten thousand years to live. While you live, while it is in your power, be good." },
+      { "id": "b05-05", "theme": "The Present", "ref": "Book III", "text": "You have no time to spend on the past or the future; all you hold is this brief moment. Use it wisely." },
+      { "id": "b05-06", "theme": "Nature", "ref": "Book IV", "text": "What is in keeping with the nature of the universe is also in keeping with your own nature. Move with the current; do not resist it." },
+      { "id": "b05-07", "theme": "Virtue", "ref": "Book VII", "text": "The best revenge is to not be like the one who caused the harm. Guard your own character; it is a gift no one else can give or take." },
+      { "id": "b05-08", "theme": "Retreat Inward", "ref": "Book IV", "text": "People seek retreats in the country, by the sea, in the mountains. But you can withdraw into yourself any time you wish; nowhere is more peaceful than your own soul." }
+    ]
+  },
+  {
+    "id": "b06",
+    "title": "Zen Stories",
+    "author": "Anonymous Zen Tradition",
+    "tradition": "Zen Buddhism",
+    "emoji": "🍃",
+    "color": "teal",
+    "passages": [
+      { "id": "b06-01", "theme": "The Full Cup", "ref": "Story 3", "text": "The master kept pouring tea into a full cup until it overflowed. \"You are like this cup,\" he said. \"Until you empty your own opinions, you cannot receive anything new.\"" },
+      { "id": "b06-02", "theme": "This Too", "ref": "Story 11", "text": "A monk said the same words whether he was sad or joyful: \"This too is so.\" He neither mourned nor celebrated; he simply saw." },
+      { "id": "b06-03", "theme": "This Moment", "ref": "Story 7", "text": "\"Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water.\" The task does not change; how you see it does." },
+      { "id": "b06-04", "theme": "The Silent Bell", "ref": "Story 19", "text": "A student asked, \"What is Zen?\" The master kept drinking his tea without answering. Some questions are answered by silence." },
+      { "id": "b06-05", "theme": "The Moon and the Finger", "ref": "Story 2", "text": "The finger points at the moon, but the finger is not the moon. Words point toward truth, but words are not truth itself." },
+      { "id": "b06-06", "theme": "The Falling Leaf", "ref": "Story 14", "text": "The wind blows, the leaf falls; neither the wind nor the leaf is at fault. Things happen — watch, before you name them." },
+      { "id": "b06-07", "theme": "Stone and Water", "ref": "Story 8", "text": "The stone does not try to stop the water, nor the water to wear down the stone. Yet over the years, water wins — patiently, without effort." },
+      { "id": "b06-08", "theme": "Today", "ref": "Story 25", "text": "A monk was asked, \"Which is the most sacred day?\" \"Today,\" he said, \"because it is the only day we have.\"" }
+    ]
+  },
+  {
+    "id": "b07",
+    "title": "The Analects",
+    "author": "Confucius",
+    "tradition": "Confucianism",
+    "emoji": "📜",
+    "color": "gold",
+    "passages": [
+      { "id": "b07-01", "theme": "Learning", "ref": "Book I", "text": "Is it not a joy to learn and, from time to time, to put what is learned into practice? Knowledge ripens not in a single moment, but through return." },
+      { "id": "b07-02", "theme": "Virtue", "ref": "Book II", "text": "The person of virtue acts first, and speaks afterward according to their actions. Consistency speaks louder than words." },
+      { "id": "b07-03", "theme": "Self-Knowledge", "ref": "Book II", "text": "To know what you know, and to know what you do not know — this is true knowledge." },
+      { "id": "b07-04", "theme": "Mistakes", "ref": "Book XV", "text": "To make a mistake and not correct it — this is the real mistake. It is not the falling, but choosing to remain on the ground, that diminishes a person." },
+      { "id": "b07-05", "theme": "Balance", "ref": "Book VI", "text": "Finding the middle way is the most difficult virtue, for it takes courage to avoid both extremes." },
+      { "id": "b07-06", "theme": "Respect", "ref": "Book I", "text": "Do not do to others what you would not want done to yourself. This simple sentence is the essence of all ethics." },
+      { "id": "b07-07", "theme": "Patience", "ref": "Book IX", "text": "Only when the cold of winter comes do we know that the pine and cypress are the last to lose their leaves. Hardship reveals what is rooted." },
+      { "id": "b07-08", "theme": "Inner Peace", "ref": "Book VII", "text": "The noble person is calm and spacious; the small person is forever anxious. Spaciousness comes from within, not from without." }
+    ]
+  }
+]

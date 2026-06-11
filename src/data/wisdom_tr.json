@@ -1,0 +1,128 @@
+[
+  {
+    "id": "b01",
+    "title": "Mesnevi",
+    "author": "Mevlana Celaleddin Rumi",
+    "tradition": "Tasavvuf",
+    "emoji": "🕯️",
+    "color": "gold",
+    "passages": [
+      { "id": "b01-01", "theme": "Aşk", "ref": "I. Cilt", "text": "Ne kadar âşıksan o kadar var ol. Aşk, varlığın kendisidir; ondan kaçtığın yer, kendinden kaçtığın yerdir." },
+      { "id": "b01-02", "theme": "Susma", "ref": "II. Cilt", "text": "Kelimeler sustuğunda, kalp konuşmaya başlar. İçindeki o derin sessizliğe kulak ver; cevap zaten oradadır." },
+      { "id": "b01-03", "theme": "Yara", "ref": "III. Cilt", "text": "Yaradaki o ışık deliğinden gir. Kırılmış olan yer, aydınlığın seninle buluştuğu yerdir." },
+      { "id": "b01-04", "theme": "Yolculuk", "ref": "I. Cilt", "text": "Sen bu dünyaya bir misafirsin; ama yüreğin bir yurt arıyor. O yurdu dışarıda değil, kendi içinde ara." },
+      { "id": "b01-05", "theme": "Değişim", "ref": "IV. Cilt", "text": "Dün geçti, yarın henüz gelmedi. Şu an, elinde tuttuğun tek gerçek zaman; onu hafifçe, ama tam olarak yaşa." },
+      { "id": "b01-06", "theme": "Sabır", "ref": "V. Cilt", "text": "Toprak sabırla tohumu taşır, sonra çiçek olur. Senin içindeki sessizlik de bir gün filizlenecek; acele etme." },
+      { "id": "b01-07", "theme": "Hakikat", "ref": "II. Cilt", "text": "Hakikati uzakta arama; o senin baktığın gözün arkasında, senin nefesinde, şu anki bu satırın içinde duruyor." },
+      { "id": "b01-08", "theme": "Dönüş", "ref": "VI. Cilt", "text": "Her ayrılık bir kavuşmanın başlangıcıdır. Kaybettiğini sandığın şey, belki de seni kendine döndüren yoldur." }
+    ]
+  },
+  {
+    "id": "b02",
+    "title": "Divan-ı Hikmet'ten İlhamla Sözler",
+    "author": "Yunus Emre",
+    "tradition": "Anadolu Tasavvufu",
+    "emoji": "🌾",
+    "color": "gold",
+    "passages": [
+      { "id": "b02-01", "theme": "Gönül", "ref": "Şiir 12", "text": "Gönül Çalab'ın tahtı, Çalab gönüle bakar; sen önce kendi gönlünü incitmeden yola çık." },
+      { "id": "b02-02", "theme": "Sevgi", "ref": "Şiir 27", "text": "Sevdiğini bil, ama sevdiğine yük olma. Gerçek sevgi, elini açık tutmaktır, sıkıca tutmak değil." },
+      { "id": "b02-03", "theme": "Alçakgönüllülük", "ref": "Şiir 5", "text": "Yüksekten bakan, yükseklikte yalnız kalır. Toprak gibi alçal ki, üstünde her tohum yeşersin." },
+      { "id": "b02-04", "theme": "Geçicilik", "ref": "Şiir 18", "text": "Bu dünya bir köprüdür, üzerinden geç ama ev kurma. Gönlünü, geçmeyecek olana bağla." },
+      { "id": "b02-05", "theme": "Birlik", "ref": "Şiir 33", "text": "Yetmiş iki millete bir gözle bakmayan, halka müderris olsa da hakikatte âsidir. Ayrımı bırak, bütüne bak." },
+      { "id": "b02-06", "theme": "Sabır", "ref": "Şiir 9", "text": "Derilmeden devşirilmez, pişmeden yenmez. İçindeki olgunluk da kendi vaktinde gelecek." },
+      { "id": "b02-07", "theme": "Hakikat", "ref": "Şiir 41", "text": "İlim ilim bilmektir, ilim kendin bilmektir. Sen kendini bilmezsen, bu nice okumaktır." },
+      { "id": "b02-08", "theme": "Huzur", "ref": "Şiir 22", "text": "Aramaktan vazgeçtiğin an, aradığın şey zaten yanı başındaymış gibi hissedersin. Dur, bir nefes al." }
+    ]
+  },
+  {
+    "id": "b03",
+    "title": "Tao Te Ching",
+    "author": "Lao Tzu",
+    "tradition": "Taoizm",
+    "emoji": "☯",
+    "color": "teal",
+    "passages": [
+      { "id": "b03-01", "theme": "Yol", "ref": "Bölüm 1", "text": "Adlandırılabilen Yol, ezeli Yol değildir. Anlamaya çalışmaktan vazgeç; sadece akışın içinde ol." },
+      { "id": "b03-02", "theme": "Eylemsizlik", "ref": "Bölüm 2", "text": "Bilge kişi zorlamadan iş görür, konuşmadan öğretir. Suyun taşı aşındırması gibi, yumuşaklık sertliği yener." },
+      { "id": "b03-03", "theme": "Su", "ref": "Bölüm 8", "text": "En yüksek iyilik, su gibidir; her şeye fayda verir ama hiçbiriyle çekişmez. Herkesin kaçındığı yere akar, ve böylece Yol'a yakındır." },
+      { "id": "b03-04", "theme": "Boşluk", "ref": "Bölüm 11", "text": "Bir kabın işe yaraması, içindeki boşluktandır. Kendi içindeki boşluğa da bu gözle bak; orası doluluğun kaynağıdır." },
+      { "id": "b03-05", "theme": "Sadelik", "ref": "Bölüm 19", "text": "Süsü bırak, sadeliği kucakla. İhtiyaçlarını azalt, isteklerini hafiflet; o zaman doğal halin geri döner." },
+      { "id": "b03-06", "theme": "Denge", "ref": "Bölüm 22", "text": "Eğilen bütün kalır, bükülen doğrulur. Az olan elde edilir, çok olan ise insanı şaşırtır." },
+      { "id": "b03-07", "theme": "Sessizlik", "ref": "Bölüm 23", "text": "Doğanın az konuşması bir derstir: şiddetli rüzgâr bütün bir sabah sürmez, sağanak yağmur bütün bir günü doldurmaz." },
+      { "id": "b03-08", "theme": "Kendini Bilmek", "ref": "Bölüm 33", "text": "Başkasını bilen bilgedir, kendini bilen aydınlanmıştır. Başkasını yenen güçlüdür, kendini yenen ise gerçekten kuvvetlidir." }
+    ]
+  },
+  {
+    "id": "b04",
+    "title": "Dhammapada — Hakikat Yolu",
+    "author": "Buddha'nın Öğretileri",
+    "tradition": "Budizm",
+    "emoji": "🪷",
+    "color": "purple",
+    "passages": [
+      { "id": "b04-01", "theme": "Zihin", "ref": "1. Bölüm", "text": "Her şey zihinden doğar, zihinle şekillenir. Saf bir zihinle konuşan ya da hareket eden kişiyi mutluluk, gölgesi gibi takip eder." },
+      { "id": "b04-02", "theme": "Öfke", "ref": "17. Bölüm", "text": "Öfkeyi öfkeyle değil, sevgiyle bırak. Bir kıvılcımı söndürmenin yolu, üzerine başka bir alev atmak değildir." },
+      { "id": "b04-03", "theme": "Şimdi", "ref": "8. Bölüm", "text": "Geçmişin peşinden koşma, gelecek için kaygılanma. Hayat şu an, bu nefeste bulunur." },
+      { "id": "b04-04", "theme": "Farkındalık", "ref": "2. Bölüm", "text": "Farkındalık, ölümsüzlüğün yoludur; dikkatsizlik ölümün yolu. Uyanık olanlar asla ölmez; dikkatsiz olanlar zaten ölü gibidir." },
+      { "id": "b04-05", "theme": "Bağlanmamak", "ref": "24. Bölüm", "text": "Nehri geçmek için sal yaparsın, ama karşıya geçince salı sırtında taşımazsın. Araçları amaçla karıştırma." },
+      { "id": "b04-06", "theme": "Şefkat", "ref": "10. Bölüm", "text": "Bütün varlıklar acıdan korkar, bütün varlıklar yaşamı sever. Kendini onların yerine koy; ne öldür, ne öldürt." },
+      { "id": "b04-07", "theme": "İçsel Zafer", "ref": "8. Bölüm", "text": "Savaş alanında bin kişiyi yenmek yerine, kendini yenen, gerçek zaferi kazanmıştır." },
+      { "id": "b04-08", "theme": "Damla Damla", "ref": "9. Bölüm", "text": "Damla damla düşen su, küpü doldurur. Bilge kişi de iyiliği azar azar biriktirerek doluya erer." }
+    ]
+  },
+  {
+    "id": "b05",
+    "title": "Düşünceler",
+    "author": "Marcus Aurelius",
+    "tradition": "Stoa Felsefesi",
+    "emoji": "🏛️",
+    "color": "sand",
+    "passages": [
+      { "id": "b05-01", "theme": "Kontrol", "ref": "II. Kitap", "text": "Elinde olan ve olmayan şeyleri ayırt et. Huzurun, bu ayrımı ne kadar net yaptığınla doğru orantılıdır." },
+      { "id": "b05-02", "theme": "Sabah", "ref": "V. Kitap", "text": "Sabah uyandığında kendine söyle: Bugün huysuz, nankör, kibirli insanlarla karşılaşacağım. Ama ben de onlar gibi güneşin altındayım." },
+      { "id": "b05-03", "theme": "Algı", "ref": "IV. Kitap", "text": "Dışarıdaki şeyler ruhuna dokunamaz; senin huzursuzluğun, onlar hakkındaki kendi yargından doğar." },
+      { "id": "b05-04", "theme": "Ölümlülük", "ref": "VI. Kitap", "text": "Sanki on bin yıl yaşayacakmış gibi davranma. Kader üzerine asılı; hayattayken, elindeyken, iyi biri ol." },
+      { "id": "b05-05", "theme": "Şimdi", "ref": "III. Kitap", "text": "Geçmiş ve gelecek için harcanacak zamanın yok; elindeki tek şey bu kısa an. Onu bilgece kullan." },
+      { "id": "b05-06", "theme": "Doğa", "ref": "IV. Kitap", "text": "Evrenin doğasına uygun olan, senin doğana da uygundur. Akışla birlikte hareket et, ona direnme." },
+      { "id": "b05-07", "theme": "Erdem", "ref": "VII. Kitap", "text": "En iyi intikam, zarar vereni taklit etmemektir. Kendi karakterini koru; bu, hiç kimsenin sana veremeyeceği bir hediyedir." },
+      { "id": "b05-08", "theme": "İçe Dönüş", "ref": "IV. Kitap", "text": "İnsanlar kendilerine kır evleri, deniz kıyıları, dağlar arar. Ama ne zaman istesen, kendi içine çekilebilirsin; hiçbir yer ruhundan daha sakin değildir." }
+    ]
+  },
+  {
+    "id": "b06",
+    "title": "Zen Öyküleri",
+    "author": "Anonim Zen Geleneği",
+    "tradition": "Zen Budizm",
+    "emoji": "🍃",
+    "color": "teal",
+    "passages": [
+      { "id": "b06-01", "theme": "Boş Fincan", "ref": "Öykü 3", "text": "Üstad, dolu bir fincana çay dökmeye devam etti, taşana kadar. \"Sen de bu fincan gibisin,\" dedi, \"önce kendi fikirlerini boşaltmadan, yeni bir şey alamazsın.\"" },
+      { "id": "b06-02", "theme": "Bu da Geçer", "ref": "Öykü 11", "text": "Bir keşiş üzüldüğünde de, sevindiğinde de aynı sözü söylerdi: \"Bu da böyle.\" Ne yas tutuyor ne kutluyordu; sadece görüyordu." },
+      { "id": "b06-03", "theme": "Şimdiki An", "ref": "Öykü 7", "text": "\"Aydınlanmadan önce odun kes, su taşı. Aydınlandıktan sonra da odun kes, su taşı.\" İş değişmez; ona bakışın değişir." },
+      { "id": "b06-04", "theme": "Sessiz Çan", "ref": "Öykü 19", "text": "Bir öğrenci, \"Zen nedir?\" diye sordu. Üstad cevap vermeden çayını içmeye devam etti. Bazı sorular, sessizlikle yanıtlanır." },
+      { "id": "b06-05", "theme": "Ay ve Parmak", "ref": "Öykü 2", "text": "Parmak ayı işaret eder, ama parmak ay değildir. Sözler hakikate işaret eder, ama sözler hakikatin kendisi değildir." },
+      { "id": "b06-06", "theme": "Düşen Yaprak", "ref": "Öykü 14", "text": "Rüzgâr eser, yaprak düşer; ne rüzgâr suçludur ne yaprak. Olaylar olur; onlara isim takmadan önce, sadece izle." },
+      { "id": "b06-07", "theme": "Taş ve Su", "ref": "Öykü 8", "text": "Taş suyu kesmeye çalışmaz, su taşı aşındırmaya da. Yine de yıllar içinde su kazanır — sabırla, çabasız." },
+      { "id": "b06-08", "theme": "Bugünkü Gün", "ref": "Öykü 25", "text": "Bir keşişe \"En kutsal gün hangisidir?\" diye sordular. \"Bugün,\" dedi, \"çünkü elimizdeki tek gün budur.\"" }
+    ]
+  },
+  {
+    "id": "b07",
+    "title": "Konuşmalar (Analektler)",
+    "author": "Konfüçyüs",
+    "tradition": "Konfüçyüsçülük",
+    "emoji": "📜",
+    "color": "gold",
+    "passages": [
+      { "id": "b07-01", "theme": "Öğrenme", "ref": "I. Bölüm", "text": "Öğrenip de zaman zaman tekrar etmek, ne hoş değil mi? Bilgi, tek seferde değil; sürekli dönüşle olgunlaşır." },
+      { "id": "b07-02", "theme": "Erdem", "ref": "II. Bölüm", "text": "Erdemli bir insan önce yapar, sonra söylediğini yapar. Sözden çok, tutarlılık konuşur." },
+      { "id": "b07-03", "theme": "Kendini Bilmek", "ref": "II. Bölüm", "text": "Bildiğini bilmek, bilmediğini de bilmek — işte gerçek bilgi budur." },
+      { "id": "b07-04", "theme": "Hata", "ref": "XV. Bölüm", "text": "Hata yapıp da düzeltmemek, asıl hatadır. Düşmek değil, yerde kalmayı seçmek insanı küçültür." },
+      { "id": "b07-05", "theme": "Denge", "ref": "VI. Bölüm", "text": "Ortayı bulmak, en zor erdemdir; çünkü iki uçtan da kaçmak cesaret ister." },
+      { "id": "b07-06", "theme": "Saygı", "ref": "I. Bölüm", "text": "Sana yapılmasını istemediğin şeyi, başkasına yapma. Bu basit cümle, bütün ahlakın özüdür." },
+      { "id": "b07-07", "theme": "Sabır", "ref": "IX. Bölüm", "text": "Soğuk kış gelmeden, çamların ve servilerin yapraklarını döküp dökmediğini bilemeyiz. Zorluk, kimin köklü olduğunu gösterir." },
+      { "id": "b07-08", "theme": "İç Huzur", "ref": "VII. Bölüm", "text": "Asil insan sakindir ve geniştir; küçük insan ise sürekli kaygı içindedir. Genişlik, dışarıdan değil içeriden gelir." }
+    ]
+  }
+]
