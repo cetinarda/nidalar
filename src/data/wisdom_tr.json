@@ -124,5 +124,41 @@
       { "id": "b07-07", "theme": "Sabır", "ref": "IX. Bölüm", "text": "Soğuk kış gelmeden, çamların ve servilerin yapraklarını döküp dökmediğini bilemeyiz. Zorluk, kimin köklü olduğunu gösterir." },
       { "id": "b07-08", "theme": "İç Huzur", "ref": "VII. Bölüm", "text": "Asil insan sakindir ve geniştir; küçük insan ise sürekli kaygı içindedir. Genişlik, dışarıdan değil içeriden gelir." }
     ]
+  },
+  {
+    "id": "b08",
+    "title": "Tanrılar Okulu'ndan İlhamla",
+    "author": "Stefano E. D'Anna",
+    "tradition": "Çağdaş Kanallık",
+    "emoji": "🌌",
+    "color": "purple",
+    "passages": [
+      { "id": "b08-01", "theme": "Düşünce", "ref": "III. Bölüm", "text": "Düşünce kaderdir. Zihninde tekrar tekrar dönen bir düşünce, yarın yürüyeceğin yolun ilk adımıdır — ona nereye gitmesini istediğini sen söyle." },
+      { "id": "b08-02", "theme": "Korku", "ref": "V. Bölüm", "text": "Korku, çürümüş bir sevgidir. Bir şeyi kaybetmekten korkuyorsan, aslında onu hâlâ çok seviyorsundur; korkunun altına bak, orada sevgi bekliyor." },
+      { "id": "b08-03", "theme": "Geçmiş", "ref": "X. Bölüm", "text": "Geçmiş tozdur, ama elinde tuttuğun bu an her zaman tazedir. Tozu üzerinden silkele; bugünün ışığı zaten üzerine düşüyor." },
+      { "id": "b08-04", "theme": "İçsel Düşman", "ref": "IV. Bölüm", "text": "Düşmanını sevmek, ona boyun eğmek değildir. İçindeki en sert eleştirmeni bile bir öğretmen gibi dinle; o da sana bir şey göstermeye çalışıyor." },
+      { "id": "b08-05", "theme": "Düş", "ref": "II. Bölüm", "text": "Dünya bir masaldır, ama anlattığın masalı sen seçersin. Aynı sahneyi bir hapishane olarak da, bir okul olarak da görebilirsin." },
+      { "id": "b08-06", "theme": "Sevdiğini Yapmak", "ref": "VIII. Bölüm", "text": "Yalnızca sevdiğin şeyi yapmak, kolay olanı yapmak değildir. Kalbinin evet dediği şeyin peşinden git; gerisi kendiliğinden düzene girer." },
+      { "id": "b08-07", "theme": "Birlik", "ref": "VIII. Bölüm", "text": "\"Ben senim\" sözü bir teselli değil, bir hatırlatmadır. Karşındakine baktığında gördüğün şey, bir bakıma senin de bir parçandır." },
+      { "id": "b08-08", "theme": "İnanç", "ref": "X. Bölüm", "text": "Önce inan, sonra gör. Çoğu zaman beklediğin kanıt, ona yer açtıktan sonra gelir." }
+    ]
+  },
+  {
+    "id": "b09",
+    "title": "Kadın Ana'nın Sözleri",
+    "author": "Anadolu Sözlü Geleneği",
+    "tradition": "Anadolu Ana Tanrıça Geleneği",
+    "emoji": "🌕",
+    "color": "sand",
+    "passages": [
+      { "id": "b09-01", "theme": "Toprak", "ref": "Anadolu Sözlü Geleneği", "text": "Kadın Ana, toprağa ilk tohumu eken elin sahibiydi. Sen de bugün attığın küçük bir tohumun hangi mevsimde meyve vereceğini bilemezsin — yine de ek." },
+      { "id": "b09-02", "theme": "Paylaşım", "ref": "Anadolu Sözlü Geleneği", "text": "Kadın Ana'nın halkında üretim, biriktirmek için değil paylaşmak içindi. Elindekini kimseyle ölçüşmeden paylaştığında, en eski bilgeliği tekrar etmiş olursun." },
+      { "id": "b09-03", "theme": "Direniş", "ref": "Anadolu Sözlü Geleneği", "text": "Karanlık çağlar boyunca sessizce direnen Alevi bacıları gibi, bazen bilgeliğin tek biçimi sabırla beklemek ve kendi gerçeğini içinde taşımaktır." },
+      { "id": "b09-04", "theme": "Denge", "ref": "Anadolu Sözlü Geleneği", "text": "Kadın Ana'nın kurduğu düzende ne hükmeden ne hizmet eden vardı; sadece birlikte taşınan bir yük vardı. Bugün taşıdığın yükü birlikte taşıyacak birini ara." },
+      { "id": "b09-05", "theme": "Hafıza", "ref": "Anadolu Sözlü Geleneği", "text": "Rüzgârın, Kadın Ana'nın sesini hâlâ bir dağdan ötekine taşıdığı söylenir. Bazı bilgelikler kitaplarda değil, rüzgârın taşıdığı bir fısıltıda saklıdır." },
+      { "id": "b09-06", "theme": "Devir Teslim", "ref": "Anadolu Sözlü Geleneği", "text": "Bir bilgi, ancak ehil bir ele teslim edildiğinde gerçek değerini bulur. Sende biriken neyse, bir gün onu taşıyabilecek birine bırakmaya hazırlan." },
+      { "id": "b09-07", "theme": "Kadim Bilgi", "ref": "Anadolu Sözlü Geleneği", "text": "Kadim bilgiler, küçük ve günlük emeller uğruna her gün biraz daha unutulur. Bugün durup eski bir sözü hatırlamak bile, küçük bir koruma eylemidir." },
+      { "id": "b09-08", "theme": "Kök", "ref": "Anadolu Sözlü Geleneği", "text": "Luvilerin Kadın Ana'sı, sonraki çağlarda başka adlarla, başka tanrıçalar olarak yeniden doğdu. Bir şey biçim değiştirebilir, ama kökü aynı toprakta kalır." }
+    ]
   }
 ]

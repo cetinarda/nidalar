@@ -44,6 +44,12 @@ export const TR = {
   'passage.saved': 'Koleksiyonda',
   'passage.share': 'Paylaş',
   'passage.shareText': '"{text}"\n\n— {author}, {book}\n\nNidalar ile alındı',
+  'passage.shareImage': 'Görsel Paylaş',
+
+  // Share image
+  'share.theme.ink': 'Gece',
+  'share.theme.paper': 'Kağıt',
+  'share.action': 'Görseli Paylaş',
 
   // Library
   'library.title': 'Kitaplık',
@@ -122,6 +128,12 @@ export const EN: Record<keyof typeof TR, string> = {
   'passage.saved': 'In collection',
   'passage.share': 'Share',
   'passage.shareText': '"{text}"\n\n— {author}, {book}\n\nReceived via Nidalar',
+  'passage.shareImage': 'Share Image',
+
+  // Share image
+  'share.theme.ink': 'Night',
+  'share.theme.paper': 'Paper',
+  'share.action': 'Share Image',
 
   // Library
   'library.title': 'Library',

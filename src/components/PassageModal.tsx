@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Share } from 'react-native';
 import { Colors, Typography, Spacing, BorderRadius } from '../theme/colors';
 import { FlatPassage } from '../data/loader';
 import { useNidaStore } from '../store/useStore';
 import { useLanguage } from '../i18n/useLanguage';
+import { ShareImageModal } from './ShareImageModal';
 
 function colorFor(key: string): string {
   switch (key) {
@@ -23,6 +24,7 @@ interface Props {
 export function PassageModal({ passage, onClose }: Props) {
   const { t } = useLanguage();
   const { isSaved, toggleSaved } = useNidaStore();
+  const [shareImagePassage, setShareImagePassage] = useState<FlatPassage | null>(null);
 
   if (!passage) return null;
   const accent = colorFor(passage.color);
@@ -75,6 +77,15 @@ export function PassageModal({ passage, onClose }: Props) {
             >
               <Text style={[styles.actionBtnText, { color: accent }]}>↗ {t('passage.share')}</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionBtn, { borderColor: accent }]}
+              onPress={() => setShareImagePassage(passage)}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.actionBtnText, { color: accent }]}>
+                ✦ {t('passage.shareImage')}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.closeBtn} onPress={onClose} activeOpacity={0.8}>
@@ -82,6 +93,8 @@ export function PassageModal({ passage, onClose }: Props) {
           </TouchableOpacity>
         </View>
       </View>
+
+      <ShareImageModal passage={shareImagePassage} onClose={() => setShareImagePassage(null)} />
     </Modal>
   );
 }

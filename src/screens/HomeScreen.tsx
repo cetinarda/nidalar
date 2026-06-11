@@ -18,6 +18,7 @@ import { Colors, Typography, Spacing, BorderRadius } from '../theme/colors';
 import { useData, FlatPassage } from '../data/loader';
 import { useNidaStore } from '../store/useStore';
 import { useLanguage } from '../i18n/useLanguage';
+import { ShareImageModal } from '../components/ShareImageModal';
 
 type Phase = 'idle' | 'arriving' | 'revealed';
 
@@ -40,6 +41,7 @@ export function HomeScreen() {
   const [phase, setPhase] = useState<Phase>('idle');
   const [intention, setIntention] = useState('');
   const [passage, setPassage] = useState<FlatPassage | null>(null);
+  const [shareImagePassage, setShareImagePassage] = useState<FlatPassage | null>(null);
 
   const seal = useRef(new Animated.Value(1)).current;
   const sealOpacity = useRef(new Animated.Value(1)).current;
@@ -238,6 +240,15 @@ export function HomeScreen() {
                     ↗ {t('passage.share')}
                   </Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.actionBtn, { borderColor: accent }]}
+                  onPress={() => setShareImagePassage(passage)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.actionBtnText, { color: accent }]}>
+                    ✦ {t('passage.shareImage')}
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <TouchableOpacity style={styles.againBtn} onPress={reset} activeOpacity={0.8}>
@@ -247,6 +258,8 @@ export function HomeScreen() {
           )
         )}
       </View>
+
+      <ShareImageModal passage={shareImagePassage} onClose={() => setShareImagePassage(null)} />
     </KeyboardAvoidingView>
   );
 }

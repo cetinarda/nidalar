@@ -124,5 +124,41 @@
       { "id": "b07-07", "theme": "Patience", "ref": "Book IX", "text": "Only when the cold of winter comes do we know that the pine and cypress are the last to lose their leaves. Hardship reveals what is rooted." },
       { "id": "b07-08", "theme": "Inner Peace", "ref": "Book VII", "text": "The noble person is calm and spacious; the small person is forever anxious. Spaciousness comes from within, not from without." }
     ]
+  },
+  {
+    "id": "b08",
+    "title": "Inspired by The School of Gods",
+    "author": "Stefano E. D'Anna",
+    "tradition": "Modern Channeling",
+    "emoji": "🌌",
+    "color": "purple",
+    "passages": [
+      { "id": "b08-01", "theme": "Thought", "ref": "Chapter III", "text": "Thought is destiny. A thought that circles again and again in your mind is the first step of the road you will walk tomorrow — decide where you want it to lead." },
+      { "id": "b08-02", "theme": "Fear", "ref": "Chapter V", "text": "Fear is love that has decayed. If you are afraid of losing something, it is because you still love it deeply; look beneath the fear, and love is waiting there." },
+      { "id": "b08-03", "theme": "The Past", "ref": "Chapter X", "text": "The past is dust, but the moment in your hands is always fresh. Shake the dust off it; today's light is already falling on you." },
+      { "id": "b08-04", "theme": "The Inner Enemy", "ref": "Chapter IV", "text": "To love your enemy does not mean to surrender to them. Listen even to your harshest inner critic as a teacher; it too is trying to show you something." },
+      { "id": "b08-05", "theme": "The Dream", "ref": "Chapter II", "text": "The world is a tale, but you choose which tale you tell. The same scene can be seen as a prison or as a school." },
+      { "id": "b08-06", "theme": "Doing What You Love", "ref": "Chapter VIII", "text": "To do only what you love does not mean to do what is easy. Follow what your heart says yes to; everything else falls into place on its own." },
+      { "id": "b08-07", "theme": "Oneness", "ref": "Chapter VIII", "text": "\"I am you\" is not a comfort, it is a reminder. What you see when you look at another is, in some way, also a part of you." },
+      { "id": "b08-08", "theme": "Belief", "ref": "Chapter X", "text": "Believe first, then see. More often than not, the proof you are waiting for arrives only after you make room for it." }
+    ]
+  },
+  {
+    "id": "b09",
+    "title": "Words of Kadın Ana, the Mother",
+    "author": "Anatolian Oral Tradition",
+    "tradition": "Anatolian Mother Goddess Tradition",
+    "emoji": "🌕",
+    "color": "sand",
+    "passages": [
+      { "id": "b09-01", "theme": "Earth", "ref": "Anatolian Oral Tradition", "text": "Kadın Ana was the first hand to sow a seed into the earth. You, too, cannot know in which season the small seed you plant today will bear fruit — plant it anyway." },
+      { "id": "b09-02", "theme": "Sharing", "ref": "Anatolian Oral Tradition", "text": "In Kadın Ana's community, what was produced was for sharing, not hoarding. When you share what you have without keeping score, you repeat the oldest wisdom there is." },
+      { "id": "b09-03", "theme": "Endurance", "ref": "Anatolian Oral Tradition", "text": "Like the Alevi sister-dervishes who endured in silence through dark ages, sometimes the only form wisdom takes is patience — carrying your truth quietly within." },
+      { "id": "b09-04", "theme": "Balance", "ref": "Anatolian Oral Tradition", "text": "In the order Kadın Ana shaped, there was no ruler and no servant — only a burden carried together. Look for someone to help carry what you are carrying today." },
+      { "id": "b09-05", "theme": "Memory", "ref": "Anatolian Oral Tradition", "text": "They say the wind still carries Kadın Ana's voice from one mountain to another. Some wisdom is not kept in books, but in a whisper carried by the wind." },
+      { "id": "b09-06", "theme": "Handing Down", "ref": "Anatolian Oral Tradition", "text": "Knowledge finds its true worth only when it is handed to someone ready to carry it. Whatever you have gathered, prepare to one day pass it on." },
+      { "id": "b09-07", "theme": "Ancient Knowledge", "ref": "Anatolian Oral Tradition", "text": "Ancient knowledge is abandoned, a little more each day, for small and fleeting gains. Even pausing today to remember an old saying is a small act of preservation." },
+      { "id": "b09-08", "theme": "Roots", "ref": "Anatolian Oral Tradition", "text": "The Mother of the Luvians was later reborn under other names, as other goddesses. A thing may change its shape, but its root stays in the same earth." }
+    ]
   }
 ]
