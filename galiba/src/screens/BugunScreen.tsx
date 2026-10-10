@@ -74,7 +74,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
           accessibilityRole="button">
           <Eyebrow>Nida</Eyebrow>
           <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{'Bir *nida* gelsin.'}</Rich>
-          <Text style={[type.small, { marginTop: 2 }]}>Dokuz gelenekten bir söz; anlamını sen ver.</Text>
+          <Text style={[type.small, { marginTop: 2 }]}>Senin kelimelerine yakın bir söz; anlamını sen ver.</Text>
         </Pressable>
 
         <Pressable onPress={onOpenEsik} style={{ marginTop: S.xxl, alignSelf: 'center' }}>

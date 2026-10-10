@@ -9,10 +9,10 @@ Kesinlikten ihtimale. Günde 7 dakikalık bir düşünce esnekliği ritüeli.
 
 - **Eşik**: 6 kartlık açılış serisi; kapakta günün sayıları (`src/content/esik.ts`, `src/content/numbers.ts`)
 - **Bugün**: günün sayıları, günün fikri, dört adımlı ritüel ve Nida
-- **Nida**: Nidalar'dan gelen söz çekme ritüeli (9 gelenek, 72 söz); söz geldikten sonra "Bu söz sana hangi ihtimali hatırlatıyor?" diye sorar (`src/content/nida.ts`)
+- **Nida**: Nidalar'dan gelen söz çekme ritüeli (9 gelenek, 72 söz); söz geldikten sonra "Bu söz sana hangi ihtimali hatırlatıyor?" diye sorar. Söz, kullanıcının niyetine, bugünkü düşüncesine ve bu haftaki aynalarına göre cihazda seçilir (`src/content/nida.ts`)
 - **Ayna**: İhtimal Aynası; kesinlik dedektörü, önce/sonra inanç oranı, köprü cümle
 - **Yol**: 21 günlük program
-- **Defter**: yalnızca cihazda saklanan kayıtlar
+- **Defter**: bu haftanın infografikleri (ritüel, ayna önce/sonra, kesinlik kelimeleri, yol), haftalık rapor ve yalnızca cihazda saklanan kayıtlar
 
 ## Çalıştırma
 
@@ -26,3 +26,15 @@ npm run typecheck
 ## Canlıya alma (Netlify)
 
 Ayarlar `netlify.toml` dosyasında. Netlify'da siteyi bu repoya bağlarken **Base directory** alanına `galiba` yazılması yeterli.
+
+## Haftalık rapor (Groq)
+
+Rapor `netlify/functions/haftalik.ts` üzerinden üretilir; API anahtarı uygulamaya gömülmez.
+
+1. Netlify → **Project configuration → Environment variables → Add a variable**
+   - `GROQ_API_KEY` = Groq konsolundan alınan anahtar (gizli tut)
+   - İsteğe bağlı: `GROQ_MODEL` (varsayılan `llama-3.3-70b-versatile`)
+2. Yeniden yayınla. Web sürümü `/api/haftalik` adresini kullanır.
+3. Mobil derlemede `EXPO_PUBLIC_REPORT_URL=https://<site>.netlify.app/api/haftalik` verilmeli.
+
+Yalnızca kullanıcı "Raporu yaz" dediğinde, o haftanın kısaltılmış kayıtları gönderilir.

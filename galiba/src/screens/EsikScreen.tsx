@@ -7,7 +7,7 @@ import { Rich } from '../components/Rich';
 import { Button } from '../components/ui';
 import { ESIK, Card } from '../content/esik';
 import { DayNumbers } from '../components/DayNumbers';
-import { C, F, S, type } from '../theme/tokens';
+import { C, F, S, type, upper } from '../theme/tokens';
 
 // Eşik: 8 kartlık açılış serisi. Yatay kaydırılır, son kartta içeri geçilir.
 export function EsikScreen({ onDone }: { onDone: () => void }) {
@@ -82,7 +82,7 @@ function CardView({ card }: { card: Card }) {
     <View>
       {card.artTop && art}
       {card.eyebrow && (
-        <Text style={[type.eyebrow, card.cover && styles.coverEyebrow, { marginTop: S.md }]}>{card.eyebrow}</Text>
+        <Text style={[type.eyebrow, card.cover && styles.coverEyebrow, { marginTop: S.md }]}>{upper(card.eyebrow)}</Text>
       )}
       {card.cover && <View style={{ marginTop: S.lg }}><DayNumbers /></View>}
       {card.title && <Rich style={[type.display, { marginTop: card.artTop ? S.lg : S.sm }]}>{card.title}</Rich>}

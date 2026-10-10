@@ -5,27 +5,31 @@ import * as Haptics from 'expo-haptics';
 import { Art } from '../components/Art';
 import { Rich } from '../components/Rich';
 import { Button, Eyebrow } from '../components/ui';
-import { BOOKS, drawPassage, Passage } from '../content/nida';
-import { useStore } from '../store/useStore';
-import { C, F, S, type } from '../theme/tokens';
+import { BOOKS, Passage, personalDraw, Signal, Why } from '../content/nida';
+import { weekDays } from '../content/week';
+import { today, useStore } from '../store/useStore';
+import { C, F, S, type, upper } from '../theme/tokens';
 
 // Nida: Nidalar'ın söz çekme ritüeli, Galiba'nın sorusuyla.
-// Söz rastgele gelir; anlamını kullanıcı verir.
+// Söz kullanıcının kendi kelimelerine (niyet, bugünkü düşünce, bu haftanın aynaları) göre seçilir;
+// eşleşme yoksa rastgele gelir. Anlamını kullanıcı verir.
 type Phase = 'ask' | 'arrived' | 'library';
 
 export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const insets = useSafeAreaInsets();
-  const { saveNida } = useStore();
+  const { saveNida, entries } = useStore();
   const [phase, setPhase] = useState<Phase>('ask');
   const [intention, setIntention] = useState('');
   const [reflection, setReflection] = useState('');
   const [passage, setPassage] = useState<Passage | null>(null);
+  const [why, setWhy] = useState<Why | undefined>();
   const [openBook, setOpenBook] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const fade = useRef(new Animated.Value(0)).current;
 
-  const reveal = (p: Passage) => {
+  const reveal = (p: Passage, reason?: Why) => {
     setPassage(p);
+    setWhy(reason);
     setReflection('');
     setSaved(false);
     setPhase('arrived');
@@ -35,7 +39,23 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
 
   const draw = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-    reveal(drawPassage(passage?.id));
+    const week = weekDays();
+    const signals: Signal[] = [
+      { text: intention, source: 'niyet', weight: 3 },
+      ...entries
+        .filter(e => e.kind === 'ritual' && e.step === 'dusunce' && e.date === today())
+        .map(e => ({ text: e.kind === 'ritual' ? e.text : '', source: 'düşünce' as const, weight: 2 })),
+      ...entries
+        .filter(e => e.kind === 'ayna' && week.includes(e.date))
+        .slice(0, 3)
+        .map(e => ({ text: e.kind === 'ayna' ? e.thought : '', source: 'ayna' as const, weight: 1 })),
+    ];
+    const recent = [
+      ...(passage ? [passage.id] : []),
+      ...entries.flatMap(e => (e.kind === 'nida' ? [e.passageId] : [])).slice(0, 14),
+    ];
+    const pick = personalDraw(signals, recent);
+    reveal(pick.passage, pick.why);
   };
 
   const close = () => {
@@ -73,7 +93,7 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
               <Art name="echo" height={190} />
               <Rich style={[type.display, { marginTop: S.md }]}>{'Bir *nida* gelsin.'}</Rich>
               <Text style={[type.body, { marginTop: S.sm }]}>
-                Dokuz gelenekten bir söz rastgele gelir. Ona anlamı sen verirsin.
+                Dokuz gelenekten, senin kelimelerine yakın bir söz gelir. Ona anlamı sen verirsin.
               </Text>
               <TextInput
                 value={intention}
@@ -92,12 +112,17 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
 
           {phase === 'arrived' && passage && (
             <Animated.View style={{ opacity: fade }}>
-              <Text style={[styles.theme, { marginTop: S.lg }]}>{passage.theme}</Text>
+              <Text style={[styles.theme, { marginTop: S.lg }]}>{upper(passage.theme)}</Text>
               <Text style={styles.passage}>{passage.text}</Text>
               <Text style={[type.small, { marginTop: S.md }]}>
                 {passage.book.author} · {passage.book.title}
               </Text>
               <Text style={type.small}>{passage.book.tradition}</Text>
+              {why && (
+                <Text style={[type.small, styles.why]}>
+                  {`${WHY_SOURCE[why.source]} “${why.word}” ifadesine göre seçildi · ${why.mood}`}
+                </Text>
+              )}
 
               <View style={styles.rule} />
 
@@ -123,7 +148,7 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
                 <Button quiet label="Başka bir ses" onPress={draw} />
               </View>
               <Text style={[type.small, { marginTop: S.md, textAlign: 'center' }]}>
-                Söz rastgele seçildi. Anlamı, ona verdiğin anlamdır.
+                {why ? 'Söz senin kelimelerine göre seçildi; ' : 'Söz rastgele seçildi; '}anlamı, ona verdiğin anlamdır.
               </Text>
             </Animated.View>
           )}
@@ -140,7 +165,7 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
                     </Pressable>
                     {open && b.passages.map(p => (
                       <Pressable key={p.id} onPress={() => reveal({ ...p, book: b })} style={styles.libPassage}>
-                        <Text style={styles.theme}>{p.theme}</Text>
+                        <Text style={styles.theme}>{upper(p.theme)}</Text>
                         <Text style={[type.body, { marginTop: 2 }]} numberOfLines={2}>{p.text}</Text>
                       </Pressable>
                     ))}
@@ -155,6 +180,12 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
   );
 }
 
+const WHY_SOURCE: Record<Why['source'], string> = {
+  niyet: 'Niyetindeki',
+  düşünce: 'Bugünkü düşüncendeki',
+  ayna: 'Bu haftaki aynandaki',
+};
+
 const styles = StyleSheet.create({
   sheet: { flex: 1, backgroundColor: C.bg },
   wrap: { paddingHorizontal: S.lg, paddingTop: S.lg, maxWidth: 520, width: '100%', alignSelf: 'center' },
@@ -163,8 +194,9 @@ const styles = StyleSheet.create({
     marginTop: S.lg, minHeight: 72, fontFamily: F.light, fontSize: 17, lineHeight: 26, color: C.ink,
     borderBottomWidth: 1, borderColor: C.lilacSoft, paddingVertical: S.sm, textAlignVertical: 'top', outlineWidth: 0,
   },
-  theme: { fontFamily: F.regular, fontSize: 12, letterSpacing: 3, color: C.gold, textTransform: 'uppercase' },
+  theme: { fontFamily: F.regular, fontSize: 12, letterSpacing: 3, color: C.gold },
   passage: { fontFamily: F.italic, fontSize: 28, lineHeight: 38, color: C.ink, marginTop: S.md },
+  why: { marginTop: S.md, color: C.inkSoft, fontStyle: 'italic' },
   rule: { width: 56, height: 1, backgroundColor: C.line, marginVertical: S.xl },
   actions: { flexDirection: 'row', justifyContent: 'center', gap: S.xl, marginTop: S.md },
   book: { borderBottomWidth: 1, borderColor: C.line },

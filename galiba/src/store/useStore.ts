@@ -23,12 +23,24 @@ export type NidaEntry = {
 };
 export type Entry = RitualEntry | AynaEntry | NidaEntry;
 
-type State = { entries: Entry[]; doneDays: number[]; seenEsik: boolean };
+export type WeeklyReport = {
+  baslik: string;
+  oruntuler: string[];
+  esneme: string;
+  ihtimal: string;
+  soru: string;
+  destek: string;
+  createdAt: string;
+};
+
+type State = { entries: Entry[]; doneDays: number[]; seenEsik: boolean; reports: Record<string, WeeklyReport> };
 
 const KEY = '@galiba_state_v1';
-const EMPTY: State = { entries: [], doneDays: [], seenEsik: false };
+const EMPTY: State = { entries: [], doneDays: [], seenEsik: false, reports: {} };
 
-export const today = () => new Date().toISOString().slice(0, 10);
+// Yerel tarih (YYYY-AA-GG); UTC kullanılırsa gece yarısından sonra gün kayar.
+export const today = (d = new Date()) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const uid = () => Math.random().toString(36).slice(2, 10);
 
 export function useGalibaState() {
@@ -68,6 +80,10 @@ export function useGalibaState() {
     update(s => ({ ...s, entries: [{ ...e, kind: 'nida', id: uid(), date: today() }, ...s.entries] }));
   }, [update]);
 
+  const saveReport = useCallback((weekKey: string, r: WeeklyReport) => {
+    update(s => ({ ...s, reports: { ...s.reports, [weekKey]: r } }));
+  }, [update]);
+
   const toggleDay = useCallback((n: number) => {
     update(s => ({
       ...s,
@@ -82,8 +98,8 @@ export function useGalibaState() {
   }, [update]);
 
   return useMemo(
-    () => ({ ...state, ready, saveRitual, saveAyna, saveNida, toggleDay, markEsikSeen, remove }),
-    [state, ready, saveRitual, saveAyna, saveNida, toggleDay, markEsikSeen, remove],
+    () => ({ ...state, ready, saveRitual, saveAyna, saveNida, saveReport, toggleDay, markEsikSeen, remove }),
+    [state, ready, saveRitual, saveAyna, saveNida, saveReport, toggleDay, markEsikSeen, remove],
   );
 }
 

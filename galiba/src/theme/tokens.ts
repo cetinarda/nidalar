@@ -26,10 +26,13 @@ export const F = {
   italic: 'CormorantGaramond_500Medium_Italic',
 } as const;
 
+// Türkçe büyük harf: CSS/RN uppercase "i"yi "I" yapar; bu yüzden metni kendimiz çeviriyoruz.
+export const upper = (s: string) => s.toLocaleUpperCase('tr-TR');
+
 export const S = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 } as const;
 
 export const type = {
-  eyebrow: { fontFamily: F.regular, fontSize: 12, letterSpacing: 4, color: C.inkMuted, textTransform: 'uppercase' as const },
+  eyebrow: { fontFamily: F.regular, fontSize: 12, letterSpacing: 4, color: C.inkMuted },
   display: { fontFamily: F.light, fontSize: 34, lineHeight: 42, color: C.ink },
   title: { fontFamily: F.light, fontSize: 26, lineHeight: 34, color: C.ink },
   body: { fontFamily: F.light, fontSize: 17, lineHeight: 27, color: C.inkSoft },

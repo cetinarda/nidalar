@@ -1,9 +1,9 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native';
-import { C, F, S, type } from '../theme/tokens';
+import { C, F, S, type, upper } from '../theme/tokens';
 
 export function Eyebrow({ children }: { children: string }) {
-  return <Text style={type.eyebrow}>{children}</Text>;
+  return <Text style={type.eyebrow}>{upper(children)}</Text>;
 }
 
 // Tek tip buton: altın çerçeveli hap ya da sessiz metin bağlantısı.
