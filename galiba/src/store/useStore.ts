@@ -1,0 +1,84 @@
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export type RitualEntry = { kind: 'ritual'; id: string; date: string; step: string; text: string };
+export type AynaEntry = {
+  kind: 'ayna';
+  id: string;
+  date: string;
+  thought: string;
+  before: number;
+  after: number;
+  alternatives: string[];
+  bridge: string;
+  firstReadRight: boolean;
+};
+export type Entry = RitualEntry | AynaEntry;
+
+type State = { entries: Entry[]; doneDays: number[]; seenEsik: boolean };
+
+const KEY = '@galiba_state_v1';
+const EMPTY: State = { entries: [], doneDays: [], seenEsik: false };
+
+export const today = () => new Date().toISOString().slice(0, 10);
+const uid = () => Math.random().toString(36).slice(2, 10);
+
+export function useGalibaState() {
+  const [state, setState] = useState<State>(EMPTY);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    AsyncStorage.getItem(KEY)
+      .then(raw => raw && setState({ ...EMPTY, ...JSON.parse(raw) }))
+      .catch(() => {})
+      .finally(() => setReady(true));
+  }, []);
+
+  const update = useCallback((fn: (s: State) => State) => {
+    setState(prev => {
+      const next = fn(prev);
+      AsyncStorage.setItem(KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
+
+  const saveRitual = useCallback((step: string, text: string) => {
+    update(s => ({
+      ...s,
+      entries: [
+        { kind: 'ritual', id: uid(), date: today(), step, text: text.trim() },
+        ...s.entries.filter(e => !(e.kind === 'ritual' && e.step === step && e.date === today())),
+      ],
+    }));
+  }, [update]);
+
+  const saveAyna = useCallback((e: Omit<AynaEntry, 'kind' | 'id' | 'date'>) => {
+    update(s => ({ ...s, entries: [{ ...e, kind: 'ayna', id: uid(), date: today() }, ...s.entries] }));
+  }, [update]);
+
+  const toggleDay = useCallback((n: number) => {
+    update(s => ({
+      ...s,
+      doneDays: s.doneDays.includes(n) ? s.doneDays.filter(d => d !== n) : [...s.doneDays, n],
+    }));
+  }, [update]);
+
+  const markEsikSeen = useCallback(() => update(s => ({ ...s, seenEsik: true })), [update]);
+
+  const remove = useCallback((id: string) => {
+    update(s => ({ ...s, entries: s.entries.filter(e => e.id !== id) }));
+  }, [update]);
+
+  return useMemo(
+    () => ({ ...state, ready, saveRitual, saveAyna, toggleDay, markEsikSeen, remove }),
+    [state, ready, saveRitual, saveAyna, toggleDay, markEsikSeen, remove],
+  );
+}
+
+export type Store = ReturnType<typeof useGalibaState>;
+export const StoreContext = createContext<Store | null>(null);
+export function useStore() {
+  const s = useContext(StoreContext);
+  if (!s) throw new Error('StoreContext eksik');
+  return s;
+}
