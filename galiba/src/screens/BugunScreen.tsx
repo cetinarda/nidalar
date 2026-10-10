@@ -118,7 +118,7 @@ function RitualSheet({ step, onClose }: { step: RitualStep | null; onClose: () =
             <Eyebrow>{`Adım ${step.n}${step.key === 'beden' ? ' · ritüel' : ''}`}</Eyebrow>
             <Button quiet label="Kapat" onPress={onClose} />
           </View>
-          <Art name={step.art} height={200} />
+          <Art name={step.art} height={200} cue={step.key === 'beden'} />
           <Rich style={[type.display, { marginTop: S.md }]}>{step.title}</Rich>
           <Text style={[type.body, { marginTop: S.md }]}>{step.guide}</Text>
           <Text style={[type.body, { marginTop: S.lg, color: C.ink }]}>{step.prompt}</Text>

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, Animated, Easing, Platform, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Defs, Ellipse, G, Line, Mask, Path, Pattern, RadialGradient, Rect, Stop } from 'react-native-svg';
-import { C } from '../theme/tokens';
+import { C, F, S } from '../theme/tokens';
 
 // Galiba'nın motifleri: pencere, mercek, katman, ayna, çatal yol, nefes, basamak.
 // Dil: yarım ton nokta dokusu, parlayan ince çizgi, tek altın odak.
@@ -46,7 +47,7 @@ function Stars({ seed }: { seed: number }) {
   );
 }
 
-export function Art({ name, height = 220 }: { name: ArtName; height?: number }) {
+function StaticArt({ name, height }: { name: ArtName; height: number }) {
   const p = name;
   return (
     <Svg width="100%" height={height} viewBox="0 0 300 240">
@@ -185,3 +186,80 @@ function render(name: ArtName, p: string) {
       );
   }
 }
+
+// ── Canlı illüstrasyon ─────────────────────────────────────────────
+// Her motif kendi yavaş ritmiyle hareket eder. "Hareketi azalt" açıksa durur.
+// breath: 4 sn nefes al, 6 sn ver; isteğe bağlı "nefes al / ver" ipucu.
+
+type Motion = {
+  inMs: number;
+  outMs: number;
+  scale?: [number, number];
+  scaleX?: [number, number];
+  tx?: [number, number];
+  ty?: [number, number];
+  rotate?: [string, string];
+  opacity?: [number, number];
+};
+
+const MOTION: Record<ArtName, Motion> = {
+  breath: { inMs: 4000, outMs: 6000, scale: [0.88, 1.06], opacity: [0.75, 1] },
+  echo: { inMs: 2600, outMs: 2600, scale: [0.94, 1.05], opacity: [0.7, 1] },
+  lens: { inMs: 5000, outMs: 5000, tx: [-6, 6], ty: [3, -3], rotate: ['-3deg', '3deg'] },
+  fork: { inMs: 4500, outMs: 4500, ty: [4, -4], opacity: [0.85, 1] },
+  stones: { inMs: 5000, outMs: 5000, scale: [0.97, 1.02], ty: [2, -2] },
+  mirror: { inMs: 4000, outMs: 4000, scaleX: [0.96, 1.03], opacity: [0.85, 1] },
+  layers: { inMs: 5000, outMs: 5000, ty: [-4, 4] },
+  window: { inMs: 6000, outMs: 6000, scale: [0.985, 1.015], opacity: [0.85, 1] },
+};
+
+const ease = Easing.inOut(Easing.sin);
+const native = Platform.OS !== 'web';
+
+export function Art({ name, height = 220, cue }: { name: ArtName; height?: number; cue?: boolean }) {
+  const t = useRef(new Animated.Value(0)).current;
+  const [phase, setPhase] = useState<'in' | 'out'>('in');
+  const m = MOTION[name];
+
+  useEffect(() => {
+    let alive = true;
+    let current: Animated.CompositeAnimation | null = null;
+    const step = (to: 0 | 1) => {
+      if (!alive) return;
+      setPhase(to === 1 ? 'in' : 'out');
+      current = Animated.timing(t, { toValue: to, duration: to === 1 ? m.inMs : m.outMs, easing: ease, useNativeDriver: native });
+      current.start(({ finished }) => finished && step(to === 1 ? 0 : 1));
+    };
+    AccessibilityInfo.isReduceMotionEnabled()
+      .catch(() => false)
+      .then(reduce => {
+        if (!reduce) step(1);
+      });
+    return () => {
+      alive = false;
+      current?.stop();
+    };
+  }, [t, m]);
+
+  const range = <T extends number | string>(r?: [T, T]) => (r ? t.interpolate({ inputRange: [0, 1], outputRange: r as any }) : undefined);
+  const transform = [
+    m.tx && { translateX: range(m.tx) },
+    m.ty && { translateY: range(m.ty) },
+    m.scale && { scale: range(m.scale) },
+    m.scaleX && { scaleX: range(m.scaleX) },
+    m.rotate && { rotate: range(m.rotate) },
+  ].filter(Boolean) as any[];
+
+  return (
+    <View>
+      <Animated.View style={{ transform, opacity: range(m.opacity) ?? 1 }}>
+        <StaticArt name={name} height={height} />
+      </Animated.View>
+      {cue && <Text style={styles.cue}>{phase === 'in' ? 'nefes al' : 'ver'}</Text>}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  cue: { fontFamily: F.italic, fontSize: 20, color: C.gold, textAlign: 'center', marginTop: S.xs },
+});
