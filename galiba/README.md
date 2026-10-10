@@ -10,6 +10,7 @@ Kesinlikten ihtimale. Günde 7 dakikalık bir düşünce esnekliği ritüeli.
 - **Eşik**: 6 kartlık açılış serisi; kapakta günün sayıları (`src/content/esik.ts`, `src/content/numbers.ts`)
 - **Bugün**: günün sayıları, günün fikri, dört adımlı ritüel ve Nida
 - **Nida**: Nidalar'dan gelen söz çekme ritüeli (9 gelenek, 72 söz); söz geldikten sonra "Bu söz sana hangi ihtimali hatırlatıyor?" diye sorar. Söz, kullanıcının niyetine, bugünkü düşüncesine ve bu haftaki aynalarına göre cihazda seçilir (`src/content/nida.ts`)
+- **Işık Yolu** (oyun): yıldızlar nefes ritminde sırayla yanar, kullanıcı aynı yolu çizer. Süre, puan ve kaybetme yok; yol hatasız turda uzar, zorlanınca kısalır; beşten sonra bazı turlar tersinden. 7 tur, ~3 dakika (`src/content/oyun.ts`)
 - **Ayna**: İhtimal Aynası; kesinlik dedektörü, önce/sonra inanç oranı, köprü cümle
 - **Yol**: 21 günlük program
 - **Defter**: bu haftanın infografikleri (ritüel, ayna önce/sonra, kesinlik kelimeleri, yol), haftalık rapor ve yalnızca cihazda saklanan kayıtlar

@@ -33,10 +33,21 @@ export type WeeklyReport = {
   createdAt: string;
 };
 
-type State = { entries: Entry[]; doneDays: number[]; seenEsik: boolean; reports: Record<string, WeeklyReport> };
+export type GameStats = { best: number; plays: number; lastSpan: number; lastDate: string };
+
+type State = {
+  entries: Entry[];
+  doneDays: number[];
+  seenEsik: boolean;
+  reports: Record<string, WeeklyReport>;
+  game: GameStats;
+};
 
 const KEY = '@galiba_state_v1';
-const EMPTY: State = { entries: [], doneDays: [], seenEsik: false, reports: {} };
+const EMPTY: State = {
+  entries: [], doneDays: [], seenEsik: false, reports: {},
+  game: { best: 0, plays: 0, lastSpan: 3, lastDate: '' },
+};
 
 // Yerel tarih (YYYY-AA-GG); UTC kullanılırsa gece yarısından sonra gün kayar.
 export const today = (d = new Date()) =>
@@ -84,6 +95,18 @@ export function useGalibaState() {
     update(s => ({ ...s, reports: { ...s.reports, [weekKey]: r } }));
   }, [update]);
 
+  const saveGame = useCallback((longest: number, endSpan: number) => {
+    update(s => ({
+      ...s,
+      game: {
+        best: Math.max(s.game.best, longest),
+        plays: s.game.plays + 1,
+        lastSpan: endSpan,
+        lastDate: today(),
+      },
+    }));
+  }, [update]);
+
   const toggleDay = useCallback((n: number) => {
     update(s => ({
       ...s,
@@ -98,8 +121,8 @@ export function useGalibaState() {
   }, [update]);
 
   return useMemo(
-    () => ({ ...state, ready, saveRitual, saveAyna, saveNida, saveReport, toggleDay, markEsikSeen, remove }),
-    [state, ready, saveRitual, saveAyna, saveNida, saveReport, toggleDay, markEsikSeen, remove],
+    () => ({ ...state, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove }),
+    [state, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove],
   );
 }
 
