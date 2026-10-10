@@ -47,7 +47,81 @@ function Stars({ seed }: { seed: number }) {
   );
 }
 
-function StaticArt({ name, height }: { name: ArtName; height: number }) {
+// ── Sahneli motifler: t ∈ [0, 1) döngü içindeki an; t yoksa durağan son kare.
+
+type Pt = [number, number];
+const SPLIT: Pt = [150, 150];
+const BRANCHES: { d: string; ctrl?: Pt; mid: Pt; tip: Pt }[] = [
+  { d: 'M 150 150 Q 150 110 90 80 L 70 58', ctrl: [150, 110], mid: [90, 80], tip: [70, 58] },
+  { d: 'M 150 150 L 150 40', mid: [150, 95], tip: [150, 40] },
+  { d: 'M 150 150 Q 150 116 210 92 L 232 74', ctrl: [150, 116], mid: [210, 92], tip: [232, 74] },
+];
+const smooth = (x: number) => x * x * (3 - 2 * x);
+const lerp = (a: Pt, b: Pt, u: number): Pt => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
+
+function along(br: (typeof BRANCHES)[number], u: number): Pt {
+  if (!br.ctrl) return lerp(SPLIT, br.tip, u);
+  // Eğrinin ilk %80'i, son %20'si düz uç.
+  if (u < 0.8) {
+    const v = u / 0.8;
+    return lerp(lerp(SPLIT, br.ctrl, v), lerp(br.ctrl, br.mid, v), v);
+  }
+  return lerp(br.mid, br.tip, (u - 0.8) / 0.2);
+}
+
+function forkFrame(t?: number): { balls: Pt[]; opacity: number; glow: number } {
+  const tips = BRANCHES.map(b => b.tip);
+  if (t === undefined) return { balls: tips, opacity: 1, glow: 1 };
+  if (t < 0.3) {
+    const u = smooth(t / 0.3);
+    return { balls: [[150, 214 - (214 - SPLIT[1]) * u]], opacity: Math.min(1, t / 0.06), glow: 0 };
+  }
+  if (t < 0.7) {
+    const u = smooth((t - 0.3) / 0.4);
+    return { balls: BRANCHES.map(b => along(b, u)), opacity: 1, glow: u * 0.4 };
+  }
+  if (t < 0.9) return { balls: tips, opacity: 1, glow: 0.4 + 0.6 * smooth((t - 0.7) / 0.2) };
+  const out = 1 - (t - 0.9) / 0.1;
+  return { balls: tips, opacity: out, glow: out };
+}
+
+const STONES: [number, number, number, number][] = [
+  [150, 214, 46, 12], [128, 176, 36, 9], [164, 146, 28, 7], [140, 122, 21, 5], [156, 104, 15, 4],
+];
+
+function stonesFrame(t?: number): { active: number; fade: number } {
+  if (t === undefined) return { active: 1, fade: 1 };
+  const slots = STONES.length + 1; // son yuva: kısa bir durak
+  const x = t * slots;
+  const active = Math.floor(x);
+  return { active, fade: Math.min(1, (x - active) * 3) };
+}
+
+// requestAnimationFrame ile döngü; reduce motion açıksa durur.
+function useLoop(ms: number, enabled: boolean) {
+  const [t, setT] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (!enabled) return;
+    let raf = 0;
+    let alive = true;
+    const start = Date.now();
+    AccessibilityInfo.isReduceMotionEnabled().catch(() => false).then(reduce => {
+      if (reduce || !alive) return;
+      const tick = () => {
+        setT(((Date.now() - start) % ms) / ms);
+        raf = requestAnimationFrame(tick);
+      };
+      tick();
+    });
+    return () => {
+      alive = false;
+      cancelAnimationFrame(raf);
+    };
+  }, [ms, enabled]);
+  return t;
+}
+
+function StaticArt({ name, height, t }: { name: ArtName; height: number; t?: number }) {
   const p = name;
   return (
     <Svg width="100%" height={height} viewBox="0 0 300 240">
@@ -65,12 +139,12 @@ function StaticArt({ name, height }: { name: ArtName; height: number }) {
         </Mask>
       </Defs>
       <Stars seed={name.length + 1} />
-      {render(name, p)}
+      {render(name, p, t)}
     </Svg>
   );
 }
 
-function render(name: ArtName, p: string) {
+function render(name: ArtName, p: string, t?: number) {
   const gold = `url(#${p}-gd)`;
   const goldBig = `url(#${p}-gb)`;
   const lilac = `url(#${p}-ld)`;
@@ -123,24 +197,33 @@ function render(name: ArtName, p: string) {
           <Circle cx={150} cy={110} r={6} fill={C.gold} />
         </G>
       );
-    // Çatal yol: tek başlangıç, üç ihtimal.
-    case 'fork':
+    // Çatal yol: tek bir ışık gövdeden yükselir, ayrım noktasında üç ihtimale bölünür.
+    case 'fork': {
+      const f = forkFrame(t);
       return (
         <G>
           <Rect x={0} y={196} width={300} height={44} fill={lilac} opacity={0.6} />
-          <GlowPath d="M 150 214 L 150 150 Q 150 110 90 80 L 70 58" color={C.coral} w={2} />
-          <GlowPath d="M 150 150 L 150 44" color={C.coral} w={2} />
-          <GlowPath d="M 150 150 Q 150 116 210 92 L 232 74" color={C.coral} w={2} />
-          <Circle cx={150} cy={36} r={34} fill={gold} opacity={0.6} mask={fade} />
-          {[[70, 58], [150, 40], [232, 74]].map(([x, y], i) => (
-            <G key={i}>
-              <Circle cx={x} cy={y} r={10} stroke={C.ink} strokeOpacity={0.25} fill="none" />
+          <GlowPath d={`M 150 214 L ${SPLIT[0]} ${SPLIT[1]}`} color={C.coral} w={2} />
+          {BRANCHES.map(br => (
+            <GlowPath key={br.d} d={br.d} color={C.coral} w={2} />
+          ))}
+          <Circle cx={150} cy={36} r={34} fill={gold} opacity={0.6 * f.glow} mask={fade} />
+          {BRANCHES.map(br => (
+            <G key={br.d}>
+              <Circle cx={br.tip[0]} cy={br.tip[1]} r={10} stroke={C.ink} strokeOpacity={0.25} fill="none" />
+              <Circle cx={br.tip[0]} cy={br.tip[1]} r={14} fill={C.gold} opacity={0.18 * f.glow} />
+            </G>
+          ))}
+          <Circle cx={SPLIT[0]} cy={SPLIT[1]} r={4} fill={C.ink} />
+          {f.balls.map(([x, y], i) => (
+            <G key={i} opacity={f.opacity}>
+              <Circle cx={x} cy={y} r={11} fill={C.gold} opacity={0.18} />
               <Circle cx={x} cy={y} r={6} fill={C.gold} />
             </G>
           ))}
-          <Circle cx={150} cy={150} r={4} fill={C.ink} />
         </G>
       );
+    }
     // Nefes: merkezden dışa yayılan halkalar.
     case 'breath':
       return (
@@ -154,22 +237,28 @@ function render(name: ArtName, p: string) {
           <Circle cx={150} cy={120} r={8} fill={C.gold} />
         </G>
       );
-    // Basamak taşları: bir sonraki taş parlıyor.
-    case 'stones':
+    // Basamak taşları: altın ışık taştan taşa, yakından uzağa sırayla ilerler.
+    case 'stones': {
+      const st = stonesFrame(t);
       return (
         <G>
           <Rect x={0} y={150} width={300} height={90} fill={lilac} opacity={0.35} />
-          {[[150, 214, 46, 12], [128, 176, 36, 9], [164, 146, 28, 7], [140, 122, 21, 5], [156, 104, 15, 4]].map(([x, y, rx, ry], i) => (
-            <G key={i}>
-              <Ellipse cx={x} cy={y} rx={rx} ry={ry} fill={i === 1 ? gold : C.bg} />
-              <Ellipse cx={x} cy={y} rx={rx} ry={ry} stroke={i === 1 ? C.gold : C.coral}
-                strokeOpacity={i === 1 ? 1 : 0.7 - i * 0.1} strokeWidth={1.4} fill="none" />
-            </G>
-          ))}
+          {STONES.map(([x, y, rx, ry], i) => {
+            const lit = i === st.active ? st.fade : i < st.active ? 0.22 : 0;
+            return (
+              <G key={i}>
+                <Ellipse cx={x} cy={y} rx={rx} ry={ry} fill={C.bg} />
+                <Ellipse cx={x} cy={y} rx={rx} ry={ry} fill={gold} opacity={lit} />
+                <Ellipse cx={x} cy={y} rx={rx} ry={ry} stroke={C.coral} strokeOpacity={0.7 - i * 0.1} strokeWidth={1.4} fill="none" />
+                <Ellipse cx={x} cy={y} rx={rx} ry={ry} stroke={C.gold} strokeOpacity={i === st.active ? st.fade : 0} strokeWidth={1.6} fill="none" />
+              </G>
+            );
+          })}
           <Circle cx={156} cy={58} r={30} fill={gold} opacity={0.5} mask={fade} />
           <Circle cx={156} cy={58} r={6} fill={C.gold} />
         </G>
       );
+    }
     // Yankı: uzaktan gelen bir ses, dalga dalga.
     case 'echo':
       return (
@@ -202,12 +291,12 @@ type Motion = {
   opacity?: [number, number];
 };
 
-const MOTION: Record<ArtName, Motion> = {
+const SCENE: Partial<Record<ArtName, number>> = { fork: 5500, stones: 4800 };
+
+const MOTION: Partial<Record<ArtName, Motion>> = {
   breath: { inMs: 4000, outMs: 6000, scale: [0.88, 1.06], opacity: [0.75, 1] },
   echo: { inMs: 2600, outMs: 2600, scale: [0.94, 1.05], opacity: [0.7, 1] },
   lens: { inMs: 5000, outMs: 5000, tx: [-6, 6], ty: [3, -3], rotate: ['-3deg', '3deg'] },
-  fork: { inMs: 4500, outMs: 4500, ty: [4, -4], opacity: [0.85, 1] },
-  stones: { inMs: 5000, outMs: 5000, scale: [0.97, 1.02], ty: [2, -2] },
   mirror: { inMs: 4000, outMs: 4000, scaleX: [0.96, 1.03], opacity: [0.85, 1] },
   layers: { inMs: 5000, outMs: 5000, ty: [-4, 4] },
   window: { inMs: 6000, outMs: 6000, scale: [0.985, 1.015], opacity: [0.85, 1] },
@@ -220,8 +309,10 @@ export function Art({ name, height = 220, cue }: { name: ArtName; height?: numbe
   const t = useRef(new Animated.Value(0)).current;
   const [phase, setPhase] = useState<'in' | 'out'>('in');
   const m = MOTION[name];
+  const sceneT = useLoop(SCENE[name] ?? 1000, SCENE[name] !== undefined);
 
   useEffect(() => {
+    if (!m) return;
     let alive = true;
     let current: Animated.CompositeAnimation | null = null;
     const step = (to: 0 | 1) => {
@@ -240,6 +331,10 @@ export function Art({ name, height = 220, cue }: { name: ArtName; height?: numbe
       current?.stop();
     };
   }, [t, m]);
+
+  if (!m) {
+    return <StaticArt name={name} height={height} t={sceneT} />;
+  }
 
   const range = <T extends number | string>(r?: [T, T]) => (r ? t.interpolate({ inputRange: [0, 1], outputRange: r as any }) : undefined);
   const transform = [
