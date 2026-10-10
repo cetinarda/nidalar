@@ -85,6 +85,21 @@ function forkFrame(t?: number): { balls: Pt[]; opacity: number; glow: number } {
   return { balls: tips, opacity: out, glow: out };
 }
 
+const ECHO_RADII = [44, 72, 100, 128];
+const arc = (r: number) => `M ${96 + r * 0.6} ${120 - r * 0.8} A ${r} ${r} 0 0 1 ${96 + r * 0.6} ${120 + r * 0.8}`;
+
+// 0–0.2 kaynak parlar · 0.2–0.8 halkalar içten dışa sırayla yanar · sonra sessizlik.
+function echoFrame(t?: number): { source: number; arcs: number[] } {
+  if (t === undefined) return { source: 1, arcs: [0.6, 0.35, 0.2, 0.1] };
+  const source = t < 0.2 ? smooth(t / 0.2) : t < 0.85 ? 1 - 0.6 * smooth((t - 0.2) / 0.65) : 0.4 * (1 - (t - 0.85) / 0.15);
+  const arcs = ECHO_RADII.map((_, i) => {
+    const center = 0.28 + i * 0.14;
+    const x = Math.abs(t - center) / 0.11;
+    return x >= 1 ? 0 : smooth(1 - x);
+  });
+  return { source, arcs };
+}
+
 const STONES: [number, number, number, number][] = [
   [150, 214, 46, 12], [128, 176, 36, 9], [164, 146, 28, 7], [140, 122, 21, 5], [156, 104, 15, 4],
 ];
@@ -259,20 +274,34 @@ function render(name: ArtName, p: string, t?: number) {
         </G>
       );
     }
-    // Yankı: uzaktan gelen bir ses, dalga dalga.
-    case 'echo':
+    // Yankı: kaynakta bir çağrı toplanır, ışık halkalar boyunca sırayla dışa yayılır.
+    case 'echo': {
+      const e = echoFrame(t);
       return (
         <G>
-          <Circle cx={96} cy={120} r={44} fill={gold} opacity={0.6} mask={fade} />
-          {[44, 72, 100, 128].map((r, i) => (
-            <Path key={r} d={`M ${96 + r * 0.6} ${120 - r * 0.8} A ${r} ${r} 0 0 1 ${96 + r * 0.6} ${120 + r * 0.8}`}
-              stroke={i === 0 ? C.coral : C.lilac} strokeOpacity={i === 0 ? 1 : 0.85 - i * 0.2}
-              strokeWidth={i === 0 ? 2 : 1.4} strokeDasharray={i === 2 ? '1 5' : undefined}
-              strokeLinecap="round" fill="none" />
-          ))}
+          <Defs>
+            {/* Solma maskesi kaynağın kendi merkezinde: hale yuvarlak kalsın. */}
+            <Mask id={`${p}-src`}>
+              <Circle cx={96} cy={120} r={46} fill={`url(#${p}-fg)`} />
+            </Mask>
+          </Defs>
+          <Circle cx={96} cy={120} r={46} fill={gold} opacity={0.3 + 0.6 * e.source} mask={`url(#${p}-src)`} />
+          {ECHO_RADII.map((r, i) => {
+            const d = arc(r);
+            return (
+              <G key={r}>
+                <Path d={d} stroke={i === 0 ? C.coral : C.lilac} strokeOpacity={i === 0 ? 0.9 : 0.75 - i * 0.18}
+                  strokeWidth={i === 0 ? 2 : 1.4} strokeDasharray={i === 2 ? '1 5' : undefined} strokeLinecap="round" fill="none" />
+                <Path d={d} stroke={C.gold} strokeOpacity={0.22 * e.arcs[i]} strokeWidth={10} strokeLinecap="round" fill="none" />
+                <Path d={d} stroke={C.gold} strokeOpacity={e.arcs[i]} strokeWidth={2.2} strokeLinecap="round" fill="none" />
+              </G>
+            );
+          })}
+          <Circle cx={96} cy={120} r={12} fill={C.gold} opacity={0.2 * e.source} />
           <Circle cx={96} cy={120} r={7} fill={C.gold} />
         </G>
       );
+    }
   }
 }
 
@@ -291,11 +320,10 @@ type Motion = {
   opacity?: [number, number];
 };
 
-const SCENE: Partial<Record<ArtName, number>> = { fork: 5500, stones: 4800 };
+const SCENE: Partial<Record<ArtName, number>> = { fork: 5500, stones: 4800, echo: 4500 };
 
 const MOTION: Partial<Record<ArtName, Motion>> = {
   breath: { inMs: 4000, outMs: 6000, scale: [0.88, 1.06], opacity: [0.75, 1] },
-  echo: { inMs: 2600, outMs: 2600, scale: [0.94, 1.05], opacity: [0.7, 1] },
   lens: { inMs: 5000, outMs: 5000, tx: [-6, 6], ty: [3, -3], rotate: ['-3deg', '3deg'] },
   mirror: { inMs: 4000, outMs: 4000, scaleX: [0.96, 1.03], opacity: [0.85, 1] },
   layers: { inMs: 5000, outMs: 5000, ty: [-4, 4] },
