@@ -85,6 +85,26 @@ function forkFrame(t?: number): { balls: Pt[]; opacity: number; glow: number } {
   return { balls: tips, opacity: out, glow: out };
 }
 
+// Öndeyken dur ve parılda · üstten arkaya git · arkada parılda · alttan öne dön.
+function mirrorFrame(t?: number) {
+  const front: Pt = [114, 110];
+  const back: Pt = [186, 110];
+  if (t === undefined) return { x: 150, y: 110, r: 6, z: 1, front: 0.5, back: 0.5 };
+  const glow = (x: number) => Math.sin(Math.PI * Math.min(1, Math.max(0, x)));
+  let u: number;
+  let lift: number;
+  let f = 0;
+  let b = 0;
+  if (t < 0.2) { u = 0; lift = 0; f = glow(t / 0.2); }
+  else if (t < 0.5) { u = smooth((t - 0.2) / 0.3); lift = -1; }
+  else if (t < 0.7) { u = 1; lift = 0; b = glow((t - 0.5) / 0.2); }
+  else { u = 1 - smooth((t - 0.7) / 0.3); lift = 1; }
+  const [x] = lerp(front, back, u);
+  const y = 110 + lift * 18 * Math.sin(Math.PI * u);
+  const z = 1 - u;
+  return { x, y, r: 4.5 + 1.8 * z, z, front: f, back: b };
+}
+
 const ECHO_RADII = [44, 72, 100, 128];
 const arc = (r: number) => `M ${96 + r * 0.6} ${120 - r * 0.8} A ${r} ${r} 0 0 1 ${96 + r * 0.6} ${120 + r * 0.8}`;
 
@@ -201,17 +221,34 @@ function render(name: ArtName, p: string, t?: number) {
           <Circle cx={150} cy={130} r={5} fill={C.gold} />
         </G>
       );
-    // Ayna: bir şekil ve onun noktalı yankısı.
-    case 'mirror':
+    // Ayna: altın top öndeki düşünceyle arkadaki yansıması arasında gidip gelir;
+    // hangisindeyse o parıldar. Arkaya giderken küçülür, soluklaşır.
+    case 'mirror': {
+      const m = mirrorFrame(t);
+      const ball = (
+        <G opacity={0.55 + 0.45 * m.z}>
+          <Circle cx={m.x} cy={m.y} r={m.r * 2} fill={C.gold} opacity={0.18} />
+          <Circle cx={m.x} cy={m.y} r={m.r} fill={C.gold} />
+        </G>
+      );
       return (
         <G>
           <Circle cx={150} cy={110} r={92} fill={gold} opacity={0.3} mask={fade} />
-          <Ellipse cx={122} cy={110} rx={50} ry={70} fill={lilac} opacity={0.7} />
-          <Ellipse cx={178} cy={110} rx={50} ry={70} stroke={C.lilac} strokeWidth={1.2} strokeDasharray="1 5" fill="none" />
-          <Ellipse cx={122} cy={110} rx={50} ry={70} stroke={C.coral} strokeWidth={2} fill="none" />
-          <Circle cx={150} cy={110} r={6} fill={C.gold} />
+          <Ellipse cx={186} cy={110} rx={46} ry={66} stroke={C.lilac} strokeWidth={1.2} strokeDasharray="1 5" fill="none" />
+          <Ellipse cx={186} cy={110} rx={46} ry={66} fill={gold} opacity={0.4 * m.back} />
+          <Ellipse cx={186} cy={110} rx={46} ry={66} stroke={C.gold} strokeOpacity={0.25 * m.back} strokeWidth={10} fill="none" />
+          <Ellipse cx={186} cy={110} rx={46} ry={66} stroke={C.gold} strokeOpacity={m.back} strokeWidth={2} strokeDasharray="2 4" fill="none" />
+          {m.z < 0.5 && ball}
+          <Ellipse cx={114} cy={110} rx={46} ry={66} fill={lilac} opacity={0.7} />
+          <Ellipse cx={114} cy={110} rx={46} ry={66} fill={gold} opacity={0.5 * m.front} />
+          <Ellipse cx={114} cy={110} rx={46} ry={66} stroke={C.coral} strokeOpacity={0.18 + 0.2 * m.front} strokeWidth={8} fill="none" />
+          <Ellipse cx={114} cy={110} rx={46} ry={66} stroke={C.coral} strokeWidth={2} fill="none" />
+          <Ellipse cx={114} cy={110} rx={46} ry={66} stroke={C.gold} strokeOpacity={0.25 * m.front} strokeWidth={10} fill="none" />
+          <Ellipse cx={114} cy={110} rx={46} ry={66} stroke={C.gold} strokeOpacity={m.front} strokeWidth={2} fill="none" />
+          {m.z >= 0.5 && ball}
         </G>
       );
+    }
     // Çatal yol: tek bir ışık gövdeden yükselir, ayrım noktasında üç ihtimale bölünür.
     case 'fork': {
       const f = forkFrame(t);
@@ -320,12 +357,11 @@ type Motion = {
   opacity?: [number, number];
 };
 
-const SCENE: Partial<Record<ArtName, number>> = { fork: 5500, stones: 4800, echo: 4500 };
+const SCENE: Partial<Record<ArtName, number>> = { fork: 5500, stones: 4800, echo: 4500, mirror: 7000 };
 
 const MOTION: Partial<Record<ArtName, Motion>> = {
   breath: { inMs: 4000, outMs: 6000, scale: [0.88, 1.06], opacity: [0.75, 1] },
   lens: { inMs: 5000, outMs: 5000, tx: [-6, 6], ty: [3, -3], rotate: ['-3deg', '3deg'] },
-  mirror: { inMs: 4000, outMs: 4000, scaleX: [0.96, 1.03], opacity: [0.85, 1] },
   layers: { inMs: 5000, outMs: 5000, ty: [-4, 4] },
   window: { inMs: 6000, outMs: 6000, scale: [0.985, 1.015], opacity: [0.85, 1] },
 };
