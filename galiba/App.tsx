@@ -11,14 +11,10 @@ import { AynaScreen } from './src/screens/AynaScreen';
 import { YolScreen } from './src/screens/YolScreen';
 import { DefterScreen } from './src/screens/DefterScreen';
 import { C, F } from './src/theme/tokens';
+import { Key, setCurrentLang, translate } from './src/i18n';
 
 type Tab = 'bugun' | 'ayna' | 'yol' | 'defter';
-const TABS: { key: Tab; label: string }[] = [
-  { key: 'bugun', label: 'Bugün' },
-  { key: 'ayna', label: 'Ayna' },
-  { key: 'yol', label: 'Yol' },
-  { key: 'defter', label: 'Defter' },
-];
+const TABS: Tab[] = ['bugun', 'ayna', 'yol', 'defter'];
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -45,7 +41,12 @@ export default function App() {
 
 function Shell() {
   const insets = useSafeAreaInsets();
-  const { seenEsik, markEsikSeen } = useStore();
+  const { seenEsik, markEsikSeen, lang } = useStore();
+  // Dil, alt bileşenler çizilmeden önce ayarlanır (büyük harf, tarih biçimi).
+  setCurrentLang(lang);
+  React.useEffect(() => {
+    if (Platform.OS === 'web' && typeof document !== 'undefined') document.documentElement.lang = lang;
+  }, [lang]);
   const [tab, setTab] = useState<Tab>('bugun');
   const [esik, setEsik] = useState(!seenEsik);
 
@@ -62,18 +63,18 @@ function Shell() {
         {tab === 'defter' && <DefterScreen />}
       </View>
       <View style={[styles.tabs, { paddingBottom: insets.bottom + 10 }]}>
-        {TABS.map(t => {
-          const on = t.key === tab;
+        {TABS.map(key => {
+          const on = key === tab;
           return (
             <Pressable
-              key={t.key}
+              key={key}
               style={styles.tab}
-              onPress={() => setTab(t.key)}
+              onPress={() => setTab(key)}
               accessibilityRole="tab"
               accessibilityState={{ selected: on }}
             >
               <View style={[styles.mark, on && styles.markOn]} />
-              <Text style={[styles.tabText, on && styles.tabTextOn]}>{t.label}</Text>
+              <Text style={[styles.tabText, on && styles.tabTextOn]}>{translate(lang, `tab.${key}` as Key)}</Text>
             </Pressable>
           );
         })}

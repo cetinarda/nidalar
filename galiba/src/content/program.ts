@@ -1,10 +1,12 @@
 // 21 günlük yol. Üç hafta, üç eşik. Her gün: bir fikir, bir soru, bir küçük deney.
 // Not: 21 gün bir program uzunluğu; "alışkanlık 21 günde oluşur" iddiası değil.
 
+import type { Lang } from '../i18n';
+
 export type Day = { n: number; idea: string; question: string; try: string };
 export type Week = { n: string; title: string; sub: string; days: Day[] };
 
-export const PROGRAM: Week[] = [
+const PROGRAM_TR: Week[] = [
   {
     n: '01',
     title: 'Otomatik *pilotu fark et.*',
@@ -49,9 +51,64 @@ export const PROGRAM: Week[] = [
   },
 ];
 
-export const PRINCIPLES = [
+const PRINCIPLES_TR = [
   { title: 'Her ihtimale açık ol.', sub: 'Ama her ihtimali aynı ölçüde doğru kabul etme.' },
   { title: 'Ritüel bir semboldür.', sub: 'Ay ve tarih dikkatini toplar; bilim iddiası taşımaz.' },
   { title: 'Anlamak, mazur görmek değildir.', sub: 'Galiba anlayışını büyütürken sınırlarını da korur.' },
   { title: 'Galiba bir terapi değildir.', sub: 'Zor bir dönemdeysen bir uzmana ulaşmak en güçlü adımdır.' },
 ];
+
+const PROGRAM_EN: Week[] = [
+  {
+    n: '01',
+    title: 'Notice the *autopilot.*',
+    sub: 'See how fast your mind decides.',
+    days: [
+      { n: 1, idea: 'A thought is not a fact.', question: 'Which thought did I believe today without questioning it?', try: 'Say one judgment again, starting with “Right now I think that…”.' },
+      { n: 2, idea: 'The event and the interpretation are separate.', question: 'What happened, and what did I add?', try: 'Write a hard moment in two columns: what a camera would record, what I thought.' },
+      { n: 3, idea: 'Certainty words are clues.', question: 'How many times did “always”, “never”, “everyone” come up today?', try: 'Replace one with “sometimes”, “often” or “not yet”.' },
+      { n: 4, idea: 'A feeling informs; it doesn’t rule.', question: 'What might this feeling be telling me?', try: 'Name one feeling, then find where it sits in your body.' },
+      { n: 5, idea: 'Speed is not accuracy.', question: 'Which decision would change if I waited an hour?', try: 'Delay one reaction today by ten breaths.' },
+      { n: 6, idea: 'The past is today’s lens.', question: 'Does this judgment remind me of an older story?', try: 'Ask: “Is this the first time, or is it familiar?”' },
+      { n: 7, idea: 'Noticing is already change.', question: 'Which pattern did I catch most this week?', try: 'Go back to your journal; reread one sentence and add “galiba” to it.' },
+    ],
+  },
+  {
+    n: '02',
+    title: 'Open *other windows.*',
+    sub: 'Look at the same event from different places.',
+    days: [
+      { n: 8, idea: 'Every behaviour has more than one explanation.', question: 'What are at least two other explanations?', try: 'Open the Mirror for one judgment and write three possibilities.' },
+      { n: 9, idea: 'The other person’s day goes on too.', question: 'Do I really know what they are dealing with today?', try: 'Ask someone one question without judging.' },
+      { n: 10, idea: 'Time changes perspective.', question: 'How much will this matter a year from now?', try: 'Tell the event through the eyes of you, ten years from now.' },
+      { n: 11, idea: 'Understanding is not agreeing.', question: 'What is the strongest form of a view I disagree with?', try: 'Write the opposing view so well its holder would approve.' },
+      { n: 12, idea: 'Uncertainty is not a gap; it is a space.', question: 'How long can I stay with not knowing?', try: 'Leave one question unanswered today and watch your body.' },
+      { n: 13, idea: 'There may be something neither of us sees.', question: 'What is the third option in this disagreement?', try: 'Ask: “If we were both right, what would be true?”' },
+      { n: 14, idea: 'Curiosity is the antidote to certainty.', question: 'What did I start being curious about this week?', try: 'Look at the belief that shifted most this week.' },
+    ],
+  },
+  {
+    n: '03',
+    title: 'Stay flexible, *stay grounded.*',
+    sub: 'Tell what you know from what you don’t.',
+    days: [
+      { n: 15, idea: 'Not every possibility is equally true.', question: 'How strong is the evidence for this thought?', try: 'Give one belief an evidence score from 0 to 100.' },
+      { n: 16, idea: 'Changing your mind is a strength.', question: 'When did I last change my mind?', try: 'Tell someone: “I was wrong about this.”' },
+      { n: 17, idea: 'Your first read is sometimes right.', question: 'Which intuition should I trust?', try: 'On something you’re right about, form one calm boundary sentence.' },
+      { n: 18, idea: 'Understanding is not excusing.', question: 'Where do understanding and boundaries meet?', try: 'Rehearse: “I understand you, and this doesn’t feel good to me.”' },
+      { n: 19, idea: 'Bridge sentences carry without forcing.', question: 'What is the next sentence I could believe?', try: 'Instead of “I’m good enough”, say “I can learn to be fairer to myself.”' },
+      { n: 20, idea: 'Values are a compass.', question: 'Looking wider, what step fits my values?', try: 'Take the aligned step you postponed this week.' },
+      { n: 21, idea: 'A threshold is not a door; it is a way of walking.', question: 'In these three weeks, what do I see less certainly, and what more clearly?', try: 'Reread your path and add one line.' },
+    ],
+  },
+];
+
+const PRINCIPLES_EN = [
+  { title: 'Be open to every possibility.', sub: 'But don’t believe them all equally.' },
+  { title: 'A ritual is a symbol.', sub: 'The moon and the date gather attention; they make no scientific claim.' },
+  { title: 'Understanding is not excusing.', sub: 'Galiba grows your understanding and protects your boundaries.' },
+  { title: 'Galiba is not therapy.', sub: 'If you are going through a hard time, reaching out to a professional is the strongest step.' },
+];
+
+export const PROGRAM: Record<Lang, Week[]> = { tr: PROGRAM_TR, en: PROGRAM_EN };
+export const PRINCIPLES: Record<Lang, { title: string; sub: string }[]> = { tr: PRINCIPLES_TR, en: PRINCIPLES_EN };

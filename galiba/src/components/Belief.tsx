@@ -2,11 +2,13 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { C, F, S } from '../theme/tokens';
+import { useT } from '../i18n';
 
 const STEPS = Array.from({ length: 11 }, (_, i) => i * 10);
 
 // 0–100 inanç ölçeği: sürükleme yerine dokunulan 11 nokta.
 export function BeliefPicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const { t } = useT();
   return (
     <View>
       <Text style={styles.big}>%{value}</Text>
@@ -27,9 +29,9 @@ export function BeliefPicker({ value, onChange }: { value: number; onChange: (v:
         ))}
       </View>
       <View style={styles.legend}>
-        <Text style={styles.legendText}>Hiç</Text>
-        <Text style={styles.legendText}>Kısmen</Text>
-        <Text style={styles.legendText}>Tamamen</Text>
+        <Text style={styles.legendText}>{t('belief.none')}</Text>
+        <Text style={styles.legendText}>{t('belief.some')}</Text>
+        <Text style={styles.legendText}>{t('belief.full')}</Text>
       </View>
     </View>
   );
@@ -37,10 +39,11 @@ export function BeliefPicker({ value, onChange }: { value: number; onChange: (v:
 
 // Önce / sonra: Galiba'nın tek ölçüsü.
 export function BeliefDelta({ before, after, compact }: { before: number; after: number; compact?: boolean }) {
+  const { t } = useT();
   return (
     <View style={{ gap: compact ? 6 : S.sm }}>
-      <Bar label="önce" value={before} color={C.coral} compact={compact} />
-      <Bar label="sonra" value={after} color={C.gold} compact={compact} />
+      <Bar label={t('belief.before')} value={before} color={C.coral} compact={compact} />
+      <Bar label={t('belief.after')} value={after} color={C.gold} compact={compact} />
     </View>
   );
 }

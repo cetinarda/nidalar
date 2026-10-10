@@ -3,28 +3,31 @@ import { StyleSheet, Text, View } from 'react-native';
 import { DAY_LABELS } from '../content/week';
 import { AynaEntry } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
+import { useT } from '../i18n';
 
 // Defter infografikleri. Kural: her grafikte değerler yazıyla da var; renk tek başına anlam taşımaz.
 
 // Haftanın ritüeli: her gün dört nokta, tamamlanan adım kadar dolu.
 export function WeekRitual({ byDay, todayIndex }: { byDay: number[]; todayIndex: number }) {
+  const { t, lang } = useT();
+  const labels = DAY_LABELS[lang];
   const total = byDay.reduce((a, b) => a + b, 0);
   return (
     <View>
       <View style={styles.weekRow}>
         {byDay.map((n, i) => (
-          <View key={i} style={styles.dayCol} accessibilityLabel={`${DAY_LABELS[i]}: ${n}/4 adım`}>
+          <View key={i} style={styles.dayCol} accessibilityLabel={t('chart.dayA11y', { d: labels[i], n })}>
             <View style={styles.stack}>
               {[3, 2, 1, 0].map(k => (
                 <View key={k} style={[styles.pip, k < n && styles.pipOn]} />
               ))}
             </View>
-            <Text style={[styles.dayLabel, i === todayIndex && { color: C.ink }]}>{DAY_LABELS[i]}</Text>
+            <Text style={[styles.dayLabel, i === todayIndex && { color: C.ink }]}>{labels[i]}</Text>
           </View>
         ))}
       </View>
       <Text style={[type.small, { marginTop: S.sm }]}>
-        {`${byDay.filter(Boolean).length} gün · ${total}/28 adım`}
+        {t('chart.days', { n: byDay.filter(Boolean).length, s: total })}
       </Text>
     </View>
   );
@@ -32,23 +35,24 @@ export function WeekRitual({ byDay, todayIndex }: { byDay: number[]; todayIndex:
 
 // Ayna dambılları: içi boş halka = önce, dolu nokta = sonra.
 export function AynaDumbbells({ aynas }: { aynas: AynaEntry[] }) {
+  const { t } = useT();
   return (
     <View style={{ gap: S.md }}>
       <View style={styles.legend}>
         <View style={styles.legendItem}>
           <View style={[styles.ring, { position: 'relative', marginLeft: 0 }]} />
-          <Text style={type.small}>önce</Text>
+          <Text style={type.small}>{t('belief.before')}</Text>
         </View>
         <View style={styles.legendItem}>
           <View style={[styles.dot, { position: 'relative', marginLeft: 0 }]} />
-          <Text style={type.small}>sonra</Text>
+          <Text style={type.small}>{t('belief.after')}</Text>
         </View>
       </View>
       {aynas.map(a => {
         const lo = Math.min(a.before, a.after);
         const hi = Math.max(a.before, a.after);
         return (
-          <View key={a.id} accessibilityLabel={`${a.thought}: önce %${a.before}, sonra %${a.after}`}>
+          <View key={a.id} accessibilityLabel={`${a.thought}: ${t('belief.before')} %${a.before}, ${t('belief.after')} %${a.after}`}>
             <Text style={styles.thought} numberOfLines={1}>{a.thought}</Text>
             <View style={styles.dbRow}>
               <View style={styles.track}>
@@ -85,6 +89,7 @@ export function CertaintyBars({ words }: { words: [string, number][] }) {
 
 // 21 günlük yol: tamamlanan günler dolu.
 export function PathProgress({ done }: { done: number[] }) {
+  const { t } = useT();
   return (
     <View>
       <View style={styles.pathRow}>
@@ -92,7 +97,7 @@ export function PathProgress({ done }: { done: number[] }) {
           <View key={i} style={[styles.seg, done.includes(i + 1) && styles.segOn, (i + 1) % 7 === 0 && i < 20 && { marginRight: 6 }]} />
         ))}
       </View>
-      <Text style={[type.small, { marginTop: S.sm }]}>{`${done.length}/21 gün`}</Text>
+      <Text style={[type.small, { marginTop: S.sm }]}>{t('chart.pathDays', { n: done.length })}</Text>
     </View>
   );
 }

@@ -9,6 +9,7 @@ import { Button, Eyebrow } from '../components/ui';
 import { ALTERNATIVES, BRIDGES, splitCertainty } from '../content/ayna';
 import { useStore } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
+import { useT } from '../i18n';
 
 // İhtimal Aynası: her ekranda tek soru.
 // düşünce → inanç → ihtimaller → gözlem → yeniden inanç → köprü cümle
@@ -17,6 +18,7 @@ type Step = 0 | 1 | 2 | 3 | 4 | 5;
 export function AynaScreen() {
   const insets = useSafeAreaInsets();
   const { saveAyna } = useStore();
+  const { t, lang } = useT();
   const [step, setStep] = useState<Step>(0);
   const [thought, setThought] = useState('');
   const [before, setBefore] = useState(80);
@@ -28,7 +30,7 @@ export function AynaScreen() {
   const [bridge, setBridge] = useState('');
   const [saved, setSaved] = useState(false);
 
-  const parts = useMemo(() => splitCertainty(thought), [thought]);
+  const parts = useMemo(() => splitCertainty(thought, lang), [thought, lang]);
   const hits = parts.filter(p => p.hit).length;
 
   const reset = () => {
@@ -63,18 +65,18 @@ export function AynaScreen() {
       <ScrollView contentContainerStyle={[styles.wrap, { paddingTop: insets.top + S.lg }]}
         keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.top}>
-          <Eyebrow>{`İhtimal aynası · ${step + 1}/6`}</Eyebrow>
-          {step > 0 && <Button quiet label="Baştan" onPress={reset} />}
+          <Eyebrow>{t('ayna.eyebrow', { n: step + 1 })}</Eyebrow>
+          {step > 0 && <Button quiet label={t('ayna.restart')} onPress={reset} />}
         </View>
 
         {step === 0 && (
           <>
             <Art name="mirror" height={170} />
-            <Rich style={type.display}>{'Seni zorlayan *düşünce* ne?'}</Rich>
+            <Rich style={type.display}>{t('ayna.q1')}</Rich>
             <TextInput
               value={thought}
               onChangeText={setThought}
-              placeholder="Arkadaşım cevap vermedi. Beni hiç önemsemiyor."
+              placeholder={t('ayna.q1ph')}
               placeholderTextColor={C.inkMuted}
               multiline
               style={styles.input}
@@ -87,31 +89,31 @@ export function AynaScreen() {
                   )}
                 </Text>
                 <Text style={[type.small, { marginTop: S.sm }]}>
-                  {hits} kesinlik kelimesi. Yanlış oldukları anlamına gelmez. Ne kadarı gözlem, ne kadarı yorum?
+                  {t('ayna.hits', { n: hits })}
                 </Text>
               </View>
             )}
-            <Button label="Devam" onPress={next} disabled={!thought.trim()} style={styles.cta} />
+            <Button label={t('common.continue')} onPress={next} disabled={!thought.trim()} style={styles.cta} />
           </>
         )}
 
         {step === 1 && (
           <>
-            <Rich style={type.display}>{'Bu düşünceye ne kadar *inanıyorsun?*'}</Rich>
+            <Rich style={type.display}>{t('ayna.q2')}</Rich>
             <Text style={[type.small, styles.quote]}>“{thought.trim()}”</Text>
             <View style={{ marginTop: S.xl }}>
               <BeliefPicker value={before} onChange={setBefore} />
             </View>
-            <Button label="Devam" onPress={next} style={styles.cta} />
+            <Button label={t('common.continue')} onPress={next} style={styles.cta} />
           </>
         )}
 
         {step === 2 && (
           <>
-            <Rich style={type.display}>{'Başka hangi *ihtimaller* var?'}</Rich>
-            <Text style={[type.body, { marginTop: S.sm }]}>Doğru olduklarına inanman gerekmiyor. Sadece masaya koy.</Text>
+            <Rich style={type.display}>{t('ayna.q3')}</Rich>
+            <Text style={[type.body, { marginTop: S.sm }]}>{t('ayna.q3sub')}</Text>
             <View style={{ marginTop: S.lg, gap: S.sm }}>
-              {ALTERNATIVES.map(a => {
+              {ALTERNATIVES[lang].map(a => {
                 const on = alts.includes(a);
                 return (
                   <Pressable key={a} onPress={() => toggleAlt(a)} style={[styles.chip, on && styles.chipOn]}>
@@ -123,58 +125,58 @@ export function AynaScreen() {
             <TextInput
               value={own}
               onChangeText={setOwn}
-              placeholder="Kendi ihtimalin…"
+              placeholder={t('ayna.own')}
               placeholderTextColor={C.inkMuted}
               style={[styles.input, { minHeight: 48 }]}
             />
-            <Button label="Devam" onPress={next} disabled={alts.length === 0 && !own.trim()} style={styles.cta} />
+            <Button label={t('common.continue')} onPress={next} disabled={alts.length === 0 && !own.trim()} style={styles.cta} />
           </>
         )}
 
         {step === 3 && (
           <>
-            <Rich style={type.display}>{'Hangi gözlem *fikrini değiştirirdi?*'}</Rich>
+            <Rich style={type.display}>{t('ayna.q4')}</Rich>
             <TextInput
               value={evidence}
               onChangeText={setEvidence}
-              placeholder="Yarın kendiliğinden yazarsa…"
+              placeholder={t('ayna.q4ph')}
               placeholderTextColor={C.inkMuted}
               multiline
               style={styles.input}
             />
             <Pressable onPress={() => setFirstRight(v => !v)} style={[styles.chip, firstRight && styles.chipOn, { marginTop: S.lg }]}>
-              <Text style={[styles.chipText, firstRight && { color: C.ink }]}>İlk okumam galiba doğru.</Text>
+              <Text style={[styles.chipText, firstRight && { color: C.ink }]}>{t('ayna.firstRight')}</Text>
             </Pressable>
             {firstRight && (
               <Text style={[type.small, { marginTop: S.sm }]}>
-                Bu da bir sonuç. Anlamak mazur görmek değildir; sınırını korumak da esnek düşünmenin parçası.
+                {t('ayna.firstRightNote')}
               </Text>
             )}
-            <Button label="Devam" onPress={next} style={styles.cta} />
+            <Button label={t('common.continue')} onPress={next} style={styles.cta} />
           </>
         )}
 
         {step === 4 && (
           <>
-            <Rich style={type.display}>{'Şimdi ne kadar *inanıyorsun?*'}</Rich>
+            <Rich style={type.display}>{t('ayna.q5')}</Rich>
             <Text style={[type.small, styles.quote]}>“{thought.trim()}”</Text>
             <View style={{ marginTop: S.xl }}>
               <BeliefPicker value={after} onChange={setAfter} />
             </View>
-            <Text style={[type.small, { marginTop: S.md }]}>Değişmemesi de bir cevap. Dürüst olan sayı, doğru sayıdır.</Text>
-            <Button label="Devam" onPress={next} style={styles.cta} />
+            <Text style={[type.small, { marginTop: S.md }]}>{t('ayna.q5note')}</Text>
+            <Button label={t('common.continue')} onPress={next} style={styles.cta} />
           </>
         )}
 
         {step === 5 && (
           <>
-            <Rich style={type.display}>{after < before ? 'Bir ihtimal *daha var.*' : 'Bakmak da *bir adım.*'}</Rich>
+            <Rich style={type.display}>{after < before ? t('ayna.endSoft') : t('ayna.endSame')}</Rich>
             <View style={{ marginTop: S.xl }}>
               <BeliefDelta before={before} after={after} />
             </View>
-            <Text style={[type.body, { marginTop: S.xl, color: C.ink }]}>İnanabileceğin bir köprü cümle seç:</Text>
+            <Text style={[type.body, { marginTop: S.xl, color: C.ink }]}>{t('ayna.bridge')}</Text>
             <View style={{ marginTop: S.sm, gap: S.sm }}>
-              {BRIDGES.map(b => (
+              {BRIDGES[lang].map(b => (
                 <Pressable key={b} onPress={() => setBridge(b)} style={[styles.chip, bridge === b && styles.chipOn]}>
                   <Text style={[styles.chipText, bridge === b && { color: C.ink }]}>{b}</Text>
                 </Pressable>
@@ -182,11 +184,11 @@ export function AynaScreen() {
             </View>
             {saved ? (
               <>
-                <Rich style={[type.body, { marginTop: S.xl, textAlign: 'center' }]}>{'Deftere eklendi. *Galiba.*'}</Rich>
-                <Button quiet label="Yeni bir düşünce" onPress={reset} style={{ alignSelf: 'center' }} />
+                <Rich style={[type.body, { marginTop: S.xl, textAlign: 'center' }]}>{t('common.addedJournal')}</Rich>
+                <Button quiet label={t('ayna.new')} onPress={reset} style={{ alignSelf: 'center' }} />
               </>
             ) : (
-              <Button label="Deftere ekle" onPress={save} style={styles.cta} />
+              <Button label={t('common.addToJournal')} onPress={save} style={styles.cta} />
             )}
           </>
         )}

@@ -5,6 +5,10 @@ Kesinlikten ihtimale. Günde 7 dakikalık bir düşünce esnekliği ritüeli.
 - `docs/strateji.md`: fikir, konumlandırma, rakip araştırması, ayırt edici yönler
 - `docs/referans.md`: referans seriden ne alındı, ne alınmadı (birebir çeviri ekte)
 
+## Dil
+
+Türkçe ve İngilizce. İlk açılışta cihaz dili seçilir; Eşik serisinin üst çubuğundan ve Yol ekranının altından değiştirilebilir. Arayüz metinleri `src/i18n.ts`, içerikler her içerik dosyasında `tr` / `en` olarak durur. Nida sözleri Nidalar'ın `wisdom_tr.json` ve `wisdom_en.json` dosyalarından gelir.
+
 ## Yapı
 
 - **Eşik**: 6 kartlık açılış serisi; kapakta günün sayıları (`src/content/esik.ts`, `src/content/numbers.ts`)

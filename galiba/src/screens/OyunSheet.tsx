@@ -8,6 +8,7 @@ import { Button, Eyebrow } from '../components/ui';
 import { CLOSINGS, isReverse, makePath, makeSky, MIN_SPAN, nextSpan, ROUNDS } from '../content/oyun';
 import { useStore } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
+import { useT } from '../i18n';
 
 // Işık Yolu: yıldızlar nefes ritminde sırayla yanar, kullanıcı aynı yolu çizer.
 // intro → nefes → izle → çiz → tur sonu → … → bitiş
@@ -19,6 +20,7 @@ const native = Platform.OS !== 'web';
 export function OyunSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const insets = useSafeAreaInsets();
   const { game, saveGame } = useStore();
+  const { t, lang } = useT();
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [round, setRound] = useState(0);
@@ -104,9 +106,9 @@ export function OyunSheet({ visible, onClose }: { visible: boolean; onClose: () 
     const ns = nextSpan(span, m);
     if (m <= 1) setLongest(l => Math.max(l, span));
     setMessage(
-      m === 0 ? (ns > span ? 'Yol tamam. Bir sonraki bir yıldız daha uzun.' : 'Yol tamam.')
-        : m === 1 ? 'Yol tamam. Bir yıldızda durup baktın.'
-          : 'Yol tamam. Bir sonraki biraz daha kısa; acele yok.',
+      m === 0 ? (ns > span ? t('oyun.done0up') : t('oyun.done0'))
+        : m === 1 ? t('oyun.done1')
+          : t('oyun.done2'),
     );
     setPhase('done');
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
@@ -151,43 +153,43 @@ export function OyunSheet({ visible, onClose }: { visible: boolean; onClose: () 
   const pos = (id: number) => ({ x: sky[id].x * board, y: sky[id].y * board });
 
   const caption =
-    phase === 'breath' ? 'Nefes al…'
-      : phase === 'show' ? 'İzle.'
-        : phase === 'play' ? (reverse ? 'Şimdi tersinden yürü: son yıldızdan başla.' : 'Şimdi aynı yolu çiz.')
+    phase === 'breath' ? t('oyun.breath')
+      : phase === 'show' ? t('oyun.watch')
+        : phase === 'play' ? (reverse ? t('oyun.reverse') : t('oyun.draw'))
           : message;
 
   return (
     <Modal visible={visible} animationType="fade" onRequestClose={close} presentationStyle="fullScreen">
       <View style={[styles.root, { paddingTop: insets.top + S.md, paddingBottom: insets.bottom + S.lg }]}>
         <View style={styles.top}>
-          <Eyebrow>{phase === 'intro' || phase === 'end' ? 'Oyun' : `Işık yolu · Tur ${round + 1}/${ROUNDS}`}</Eyebrow>
-          <Button quiet label="Kapat" onPress={close} />
+          <Eyebrow>{phase === 'intro' || phase === 'end' ? t('oyun.eyebrow') : t('oyun.round', { r: round + 1, t: ROUNDS })}</Eyebrow>
+          <Button quiet label={t('common.close')} onPress={close} />
         </View>
 
         {phase === 'intro' && (
           <View style={styles.center}>
-            <Rich style={type.display}>{'Işık *yolu.*'}</Rich>
+            <Rich style={type.display}>{t('oyun.title')}</Rich>
             <Text style={[type.body, { marginTop: S.md }]}>
-              Yıldızlar nefes ritminde sırayla yanar. Sen aynı yolu çizersin.
+              {t('oyun.p1')}
             </Text>
             <Text style={[type.body, { marginTop: S.sm }]}>
-              Süre yok, kaybetmek yok. Yol senin ritmine göre uzar ya da kısalır. Bazen tersinden yürürsün: aynı yola öbür uçtan bakmak.
+              {t('oyun.p2')}
             </Text>
             <Text style={[type.small, { marginTop: S.lg }]}>
-              {`${ROUNDS} tur · yaklaşık 3 dakika${game.best ? ` · en uzun yolun ${game.best} yıldız` : ''}`}
+              {t('oyun.meta', { r: ROUNDS }) + (game.best ? t('oyun.best', { n: game.best }) : '')}
             </Text>
-            <Button label="Başla" onPress={begin} style={{ marginTop: S.xl }} />
+            <Button label={t('oyun.start')} onPress={begin} style={{ marginTop: S.xl }} />
           </View>
         )}
 
         {phase === 'end' && (
           <View style={styles.center}>
-            <Rich style={type.display}>{'Bugünlük *yeter.*'}</Rich>
+            <Rich style={type.display}>{t('oyun.endTitle')}</Rich>
             <Text style={styles.big}>{longest || '—'}</Text>
-            <Text style={type.small}>{longest ? 'yıldızlık en uzun yolu taşıdın' : 'yol bugün kısa kaldı; bu da bir bilgi'}</Text>
-            <Text style={[type.body, { marginTop: S.lg, color: C.ink }]}>{CLOSINGS[game.plays % CLOSINGS.length]}</Text>
-            <Button label="Bitir" onPress={close} style={{ marginTop: S.xl }} />
-            <Button quiet label="Yeniden başla" onPress={begin} style={{ alignSelf: 'center', marginTop: S.sm }} />
+            <Text style={type.small}>{longest ? t('oyun.endLong') : t('oyun.endShort')}</Text>
+            <Text style={[type.body, { marginTop: S.lg, color: C.ink }]}>{CLOSINGS[lang][game.plays % CLOSINGS[lang].length]}</Text>
+            <Button label={t('oyun.finish')} onPress={close} style={{ marginTop: S.xl }} />
+            <Button quiet label={t('oyun.again')} onPress={begin} style={{ alignSelf: 'center', marginTop: S.sm }} />
           </View>
         )}
 
@@ -218,7 +220,7 @@ export function OyunSheet({ visible, onClose }: { visible: boolean; onClose: () 
                         key={s.id}
                         onPress={() => tap(s.id)}
                         disabled={phase !== 'play'}
-                        accessibilityLabel={`Yıldız ${s.id + 1}`}
+                        accessibilityLabel={t('oyun.star', { n: s.id + 1 })}
                         style={[styles.hit, { left: p.x - 24, top: p.y - 24 }]}
                       >
                         {hint === s.id && (
@@ -244,7 +246,7 @@ export function OyunSheet({ visible, onClose }: { visible: boolean; onClose: () 
               )}
             </View>
             <Text style={styles.caption}>{caption}</Text>
-            {reverse && phase === 'show' && <Text style={[type.small, { textAlign: 'center' }]}>Bu turda tersinden yürüyeceksin.</Text>}
+            {reverse && phase === 'show' && <Text style={[type.small, { textAlign: 'center' }]}>{t('oyun.reverseNote')}</Text>}
           </View>
         )}
       </View>

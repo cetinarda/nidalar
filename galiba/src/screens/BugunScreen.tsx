@@ -12,16 +12,18 @@ import { OyunSheet } from './OyunSheet';
 import { PROGRAM } from '../content/program';
 import { today, useStore } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
-
-const DAYS = PROGRAM.flatMap(w => w.days);
+import { localeOf, useT } from '../i18n';
 
 function dateLabel() {
-  return new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'long' });
+  return new Date().toLocaleDateString(localeOf(), { day: 'numeric', month: 'long', weekday: 'long' });
 }
 
 export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
   const insets = useSafeAreaInsets();
   const { entries, doneDays, game } = useStore();
+  const { t, lang } = useT();
+  const RITUAL_L = RITUAL[lang];
+  const DAYS = PROGRAM[lang].flatMap(w => w.days);
   const [open, setOpen] = useState<RitualStep | null>(null);
   const [nida, setNida] = useState(false);
   const [oyun, setOyun] = useState(false);
@@ -29,7 +31,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
   const todays = entries.filter(e => e.kind === 'ritual' && e.date === today());
   const doneSteps = new Set(todays.map(e => (e.kind === 'ritual' ? e.step : '')));
   const day = DAYS.find(d => !doneDays.includes(d.n)) ?? DAYS[DAYS.length - 1];
-  const minutes = RITUAL.reduce((n, s) => n + s.minutes, 0);
+  const minutes = RITUAL_L.reduce((n, s) => n + s.minutes, 0);
 
   return (
     <View style={{ flex: 1 }}>
@@ -40,17 +42,17 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
         </View>
 
         <View style={styles.day}>
-          <Text style={styles.dayN}>Gün {day.n} / 21</Text>
+          <Text style={styles.dayN}>{t('bugun.day', { n: day.n })}</Text>
           <Text style={[type.title, { marginTop: S.xs }]}>{day.idea}</Text>
           <Text style={[type.body, { marginTop: S.sm }]}>{day.question}</Text>
         </View>
 
         <View style={styles.ritualHead}>
-          <Eyebrow>Ritüel</Eyebrow>
-          <Text style={type.small}>{doneSteps.size}/4 · {minutes} dk</Text>
+          <Eyebrow>{t('bugun.ritual')}</Eyebrow>
+          <Text style={type.small}>{t('bugun.ritualMeta', { done: doneSteps.size, min: minutes })}</Text>
         </View>
 
-        {RITUAL.map(step => {
+        {RITUAL_L.map(step => {
           const done = doneSteps.has(step.key);
           return (
             <Pressable
@@ -61,35 +63,35 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
             >
               <Text style={[styles.stepN, done && { color: C.gold }]}>{done ? '✓' : step.n}</Text>
               <Rich style={[styles.stepTitle, done && { color: C.inkMuted }]}>{step.title}</Rich>
-              <Text style={type.small}>{step.minutes} dk</Text>
+              <Text style={type.small}>{t('common.minutes', { n: step.minutes })}</Text>
             </Pressable>
           );
         })}
 
         {doneSteps.size === 4 && (
           <Rich style={[type.body, { marginTop: S.lg, color: C.ink }]}>
-            {'İç ve dış *“evet”*. Bugünlük bu kadar yeter.'}
+            {t('bugun.allDone')}
           </Rich>
         )}
 
         <Pressable onPress={() => setNida(true)} style={({ pressed }) => [styles.nida, pressed && { opacity: 0.6 }]}
           accessibilityRole="button">
-          <Eyebrow>Nida</Eyebrow>
-          <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{'Bir *nida* gelsin.'}</Rich>
-          <Text style={[type.small, { marginTop: 2 }]}>Senin kelimelerine yakın bir söz; anlamını sen ver.</Text>
+          <Eyebrow>{t('bugun.nida')}</Eyebrow>
+          <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{t('bugun.nidaTitle')}</Rich>
+          <Text style={[type.small, { marginTop: 2 }]}>{t('bugun.nidaSub')}</Text>
         </Pressable>
 
         <Pressable onPress={() => setOyun(true)} style={({ pressed }) => [styles.oyun, pressed && { opacity: 0.6 }]}
           accessibilityRole="button">
-          <Eyebrow>Oyun</Eyebrow>
-          <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{'Işık *yolu.*'}</Rich>
+          <Eyebrow>{t('bugun.game')}</Eyebrow>
+          <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{t('bugun.gameTitle')}</Rich>
           <Text style={[type.small, { marginTop: 2 }]}>
-            {`Dikkat için 3 dakika${game.best ? ` · en uzun yolun ${game.best} yıldız` : ''}`}
+            {t('bugun.gameSub') + (game.best ? t('bugun.gameBest', { n: game.best }) : '')}
           </Text>
         </Pressable>
 
         <Pressable onPress={onOpenEsik} style={{ marginTop: S.xxl, alignSelf: 'center' }}>
-          <Text style={type.small}>Eşik serisini yeniden aç  →</Text>
+          <Text style={type.small}>{t('bugun.reopen')}</Text>
         </Pressable>
       </ScrollView>
 
@@ -103,6 +105,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
 function RitualSheet({ step, onClose }: { step: RitualStep | null; onClose: () => void }) {
   const insets = useSafeAreaInsets();
   const { entries, saveRitual } = useStore();
+  const { t } = useT();
   const existing = step
     ? entries.find(e => e.kind === 'ritual' && e.step === step.key && e.date === today())
     : undefined;
@@ -127,8 +130,8 @@ function RitualSheet({ step, onClose }: { step: RitualStep | null; onClose: () =
         <ScrollView contentContainerStyle={[styles.wrap, { paddingTop: S.lg, paddingBottom: insets.bottom + S.xl }]}
           keyboardShouldPersistTaps="handled">
           <View style={styles.sheetTop}>
-            <Eyebrow>{`Adım ${step.n}${step.key === 'beden' ? ' · ritüel' : ''}`}</Eyebrow>
-            <Button quiet label="Kapat" onPress={onClose} />
+            <Eyebrow>{t('ritual.step', { n: step.n }) + (step.key === 'beden' ? t('ritual.tag') : '')}</Eyebrow>
+            <Button quiet label={t('common.close')} onPress={onClose} />
           </View>
           <Art name={step.art} height={200} cue={step.key === 'beden'} />
           <Rich style={[type.display, { marginTop: S.md }]}>{step.title}</Rich>
@@ -145,7 +148,7 @@ function RitualSheet({ step, onClose }: { step: RitualStep | null; onClose: () =
           <Button label={step.yes} onPress={save} style={{ marginTop: S.lg }} />
           {step.key === 'beden' && (
             <Text style={[type.small, { marginTop: S.md, textAlign: 'center' }]}>
-              Bu bir imgeleme pratiği; dikkatini toplar, bilim iddiası taşımaz.
+              {t('ritual.note')}
             </Text>
           )}
         </ScrollView>

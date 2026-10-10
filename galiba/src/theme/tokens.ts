@@ -1,3 +1,5 @@
+import { localeOf } from '../i18n';
+
 // Galiba — gece eriği zemin, tek altın vurgu, mercan ve lila yalnızca illüstrasyonda.
 // Kural: bir ekranda en fazla bir altın vurgu. Gerisi sessiz.
 
@@ -27,7 +29,7 @@ export const F = {
 } as const;
 
 // Türkçe büyük harf: CSS/RN uppercase "i"yi "I" yapar; bu yüzden metni kendimiz çeviriyoruz.
-export const upper = (s: string) => s.toLocaleUpperCase('tr-TR');
+export const upper = (s: string) => s.toLocaleUpperCase(localeOf());
 
 export const S = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 } as const;
 

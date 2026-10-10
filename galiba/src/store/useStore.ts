@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import type { Lang } from '../i18n';
 
 export type RitualEntry = { kind: 'ritual'; id: string; date: string; step: string; text: string };
 export type AynaEntry = {
@@ -41,9 +42,19 @@ type State = {
   seenEsik: boolean;
   reports: Record<string, WeeklyReport>;
   game: GameStats;
+  lang?: Lang;
 };
 
 const KEY = '@galiba_state_v1';
+
+// İlk açılışta cihaz dili; kullanıcı seçince store'a yazılır.
+const detected: Lang = (() => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().locale.toLowerCase().startsWith('tr') ? 'tr' : 'en';
+  } catch {
+    return 'tr';
+  }
+})();
 const EMPTY: State = {
   entries: [], doneDays: [], seenEsik: false, reports: {},
   game: { best: 0, plays: 0, lastSpan: 3, lastDate: '' },
@@ -107,6 +118,8 @@ export function useGalibaState() {
     }));
   }, [update]);
 
+  const setLang = useCallback((lang: Lang) => update(s => ({ ...s, lang })), [update]);
+
   const toggleDay = useCallback((n: number) => {
     update(s => ({
       ...s,
@@ -121,8 +134,8 @@ export function useGalibaState() {
   }, [update]);
 
   return useMemo(
-    () => ({ ...state, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove }),
-    [state, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove],
+    () => ({ ...state, lang: (state.lang ?? detected) as Lang, setLang, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove }),
+    [state, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove, setLang],
   );
 }
 

@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { dayNumbers } from '../content/numbers';
 import { C, F, S, type } from '../theme/tokens';
+import { useT } from '../i18n';
 
 // Günün sembolü: gün · ay · yılın rakam toplamı ve günün sayısı.
 export function DayNumbers({ size = 'large' }: { size?: 'large' | 'compact' }) {
-  const t = dayNumbers();
+  const { lang } = useT();
+  const t = dayNumbers(new Date(), lang);
   const large = size === 'large';
   return (
     <View style={{ alignItems: large ? 'center' : 'flex-start' }}>

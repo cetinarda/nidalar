@@ -6,6 +6,7 @@ import { Button, Eyebrow } from './ui';
 import { reportPayload, WeekSummary } from '../content/week';
 import { useStore, WeeklyReport } from '../store/useStore';
 import { C, F, S, type, upper } from '../theme/tokens';
+import { useT } from '../i18n';
 
 // Web'de aynı alan adındaki Netlify fonksiyonu; mobil derlemede tam adres verilmeli.
 const REPORT_URL = process.env.EXPO_PUBLIC_REPORT_URL || '/api/haftalik';
@@ -13,6 +14,7 @@ const MIN_ENTRIES = 3;
 
 export function ReportCard({ week }: { week: WeekSummary }) {
   const { reports, saveReport } = useStore();
+  const { t } = useT();
   const report = reports[week.weekKey];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,11 +30,11 @@ export function ReportCard({ week }: { week: WeekSummary }) {
         body: JSON.stringify(reportPayload(week)),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || 'Rapor şu an oluşturulamadı.');
+      if (!res.ok) throw new Error(t('report.error'));
       saveReport(week.weekKey, { ...(data as Omit<WeeklyReport, 'createdAt'>), createdAt: new Date().toISOString() });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     } catch (e) {
-      setError(e instanceof Error && e.message ? e.message : 'Bağlantı kurulamadı.');
+      setError(e instanceof Error && e.message === t('report.error') ? e.message : t('report.offline'));
     } finally {
       setLoading(false);
     }
@@ -40,7 +42,7 @@ export function ReportCard({ week }: { week: WeekSummary }) {
 
   return (
     <View style={styles.card}>
-      <Eyebrow>Haftalık rapor</Eyebrow>
+      <Eyebrow>{t('report.eyebrow')}</Eyebrow>
 
       {report ? (
         <>
@@ -58,34 +60,33 @@ export function ReportCard({ week }: { week: WeekSummary }) {
           {!!report.esneme && <Text style={[type.body, { marginTop: S.md }]}>{report.esneme}</Text>}
           {!!report.ihtimal && (
             <>
-              <Text style={[styles.label, { marginTop: S.lg }]}>{upper('Gelecek hafta için bir ihtimal')}</Text>
+              <Text style={[styles.label, { marginTop: S.lg }]}>{upper(t('report.next'))}</Text>
               <Text style={[type.body, { color: C.ink }]}>{report.ihtimal}</Text>
             </>
           )}
           {!!report.soru && <Rich style={[type.body, { marginTop: S.md }]}>{`*${report.soru}*`}</Rich>}
           {!!report.destek && <Text style={[type.body, styles.support]}>{report.destek}</Text>}
-          <Button quiet label={loading ? 'Yazılıyor…' : 'Yeniden yaz'} onPress={generate} disabled={loading}
+          <Button quiet label={loading ? t('report.writing') : t('report.rewrite')} onPress={generate} disabled={loading}
             style={{ marginTop: S.md, alignSelf: 'flex-start' }} />
         </>
       ) : (
         <>
           <Text style={[type.body, { marginTop: S.sm }]}>
             {enough
-              ? 'Bu haftanın kayıtlarından Galiba sana kısa bir rapor yazsın: tekrar eden kalıplar, esneyen yerler, bir ihtimal.'
-              : `Rapor için bu hafta en az ${MIN_ENTRIES} kayıt gerekiyor. Şu an ${week.inWeek.length} kayıt var.`}
+              ? t('report.intro')
+              : t('report.need', { min: MIN_ENTRIES, n: week.inWeek.length })}
           </Text>
           {loading ? (
             <ActivityIndicator color={C.gold} style={{ marginTop: S.lg }} />
           ) : (
-            <Button label="Raporu yaz" onPress={generate} disabled={!enough} style={{ marginTop: S.lg }} />
+            <Button label={t('report.write')} onPress={generate} disabled={!enough} style={{ marginTop: S.lg }} />
           )}
         </>
       )}
 
       {!!error && <Text style={[type.small, { marginTop: S.sm, color: C.coral }]}>{error}</Text>}
       <Text style={[type.small, { marginTop: S.md }]}>
-        Rapor için yalnızca bu haftanın kayıtları yapay zekâ servisine (Groq) gönderilir ve saklanmaz.
-        Rapor bir teşhis değil, bir ihtimaldir.
+        {t('report.privacy')}
       </Text>
     </View>
   );

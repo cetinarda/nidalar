@@ -55,8 +55,15 @@ export function nextSpan(span: number, mistakes: number) {
 // Yol beşe ulaşınca çift turlar tersinden: aynı yola öbür uçtan bakmak.
 export const isReverse = (round: number, span: number) => span >= 5 && round % 2 === 1;
 
-export const CLOSINGS = [
-  'Dikkat bir kas gibi; dinlenince güçlenir.',
-  'Bugünlük bu kadar yeter, galiba.',
-  'Yol uzadıkça değil, sakin kaldıkça güçlenirsin.',
-];
+export const CLOSINGS: Record<'tr' | 'en', string[]> = {
+  tr: [
+    'Dikkat bir kas gibi; dinlenince güçlenir.',
+    'Bugünlük bu kadar yeter, galiba.',
+    'Yol uzadıkça değil, sakin kaldıkça güçlenirsin.',
+  ],
+  en: [
+    'Attention is like a muscle; it grows stronger with rest.',
+    'That is enough for today, galiba.',
+    'You grow stronger not as the path gets longer, but as you stay calm.',
+  ],
+};

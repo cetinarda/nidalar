@@ -9,6 +9,7 @@ import { BOOKS, Passage, personalDraw, Signal, Why } from '../content/nida';
 import { weekDays } from '../content/week';
 import { today, useStore } from '../store/useStore';
 import { C, F, S, type, upper } from '../theme/tokens';
+import { Key, useT } from '../i18n';
 
 // Nida: Nidalar'ın söz çekme ritüeli, Galiba'nın sorusuyla.
 // Söz kullanıcının kendi kelimelerine (niyet, bugünkü düşünce, bu haftanın aynaları) göre seçilir;
@@ -18,6 +19,7 @@ type Phase = 'ask' | 'arrived' | 'library';
 export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const insets = useSafeAreaInsets();
   const { saveNida, entries } = useStore();
+  const { t, lang } = useT();
   const [phase, setPhase] = useState<Phase>('ask');
   const [intention, setIntention] = useState('');
   const [reflection, setReflection] = useState('');
@@ -54,7 +56,7 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
       ...(passage ? [passage.id] : []),
       ...entries.flatMap(e => (e.kind === 'nida' ? [e.passageId] : [])).slice(0, 14),
     ];
-    const pick = personalDraw(signals, recent);
+    const pick = personalDraw(signals, recent, lang);
     reveal(pick.passage, pick.why);
   };
 
@@ -83,29 +85,29 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
         <ScrollView contentContainerStyle={[styles.wrap, { paddingBottom: insets.bottom + S.xl }]}
           keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           <View style={styles.top}>
-            <Eyebrow>{phase === 'library' ? 'Kaynaklar' : 'Nida'}</Eyebrow>
-            <Button quiet label={phase === 'library' ? 'Geri' : 'Kapat'}
+            <Eyebrow>{phase === 'library' ? t('nida.sources') : t('nida.eyebrow')}</Eyebrow>
+            <Button quiet label={phase === 'library' ? t('common.back') : t('common.close')}
               onPress={phase === 'library' ? () => setPhase(passage ? 'arrived' : 'ask') : close} />
           </View>
 
           {phase === 'ask' && (
             <>
               <Art name="echo" height={190} />
-              <Rich style={[type.display, { marginTop: S.md }]}>{'Bir *nida* gelsin.'}</Rich>
+              <Rich style={[type.display, { marginTop: S.md }]}>{t('nida.title')}</Rich>
               <Text style={[type.body, { marginTop: S.sm }]}>
-                Dokuz gelenekten, senin kelimelerine yakın bir söz gelir. Ona anlamı sen verirsin.
+                {t('nida.sub')}
               </Text>
               <TextInput
                 value={intention}
                 onChangeText={setIntention}
-                placeholder="Bugün neyi hatırlamaya ihtiyacın var? (isteğe bağlı)"
+                placeholder={t('nida.intention')}
                 placeholderTextColor={C.inkMuted}
                 multiline
                 style={styles.input}
               />
-              <Button label="Gelsin" onPress={draw} style={{ marginTop: S.xl }} />
+              <Button label={t('nida.draw')} onPress={draw} style={{ marginTop: S.xl }} />
               <Pressable onPress={() => setPhase('library')} style={{ marginTop: S.lg, alignSelf: 'center' }}>
-                <Text style={type.small}>9 gelenek · 72 söz  →</Text>
+                <Text style={type.small}>{t('nida.library')}</Text>
               </Pressable>
             </>
           )}
@@ -120,42 +122,42 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
               <Text style={type.small}>{passage.book.tradition}</Text>
               {why && (
                 <Text style={[type.small, styles.why]}>
-                  {`${WHY_SOURCE[why.source]} “${why.word}” ifadesine göre seçildi · ${why.mood}`}
+                  {t('nida.why', { src: t(`nida.src.${why.source}` as Key), w: why.word, m: why.mood })}
                 </Text>
               )}
 
               <View style={styles.rule} />
 
               {!!intention.trim() && (
-                <Text style={[type.small, { marginBottom: S.sm }]}>Niyetin: {intention.trim()}</Text>
+                <Text style={[type.small, { marginBottom: S.sm }]}>{t('nida.yourIntention', { t: intention.trim() })}</Text>
               )}
-              <Rich style={[type.body, { color: C.ink }]}>{'Bu söz sana *hangi ihtimali* hatırlatıyor?'}</Rich>
+              <Rich style={[type.body, { color: C.ink }]}>{t('nida.q')}</Rich>
               <TextInput
                 value={reflection}
                 onChangeText={setReflection}
-                placeholder="Belki acele etmem gerekmiyordur…"
+                placeholder={t('nida.qph')}
                 placeholderTextColor={C.inkMuted}
                 multiline
                 style={styles.input}
               />
               {saved ? (
-                <Rich style={[type.body, { marginTop: S.xl, textAlign: 'center' }]}>{'Deftere eklendi. *Galiba.*'}</Rich>
+                <Rich style={[type.body, { marginTop: S.xl, textAlign: 'center' }]}>{t('common.addedJournal')}</Rich>
               ) : (
-                <Button label="Deftere ekle" onPress={save} style={{ marginTop: S.xl }} />
+                <Button label={t('common.addToJournal')} onPress={save} style={{ marginTop: S.xl }} />
               )}
               <View style={styles.actions}>
-                <Button quiet label="Paylaş" onPress={share} />
-                <Button quiet label="Başka bir ses" onPress={draw} />
+                <Button quiet label={t('nida.share')} onPress={share} />
+                <Button quiet label={t('nida.another')} onPress={draw} />
               </View>
               <Text style={[type.small, { marginTop: S.md, textAlign: 'center' }]}>
-                {why ? 'Söz senin kelimelerine göre seçildi; ' : 'Söz rastgele seçildi; '}anlamı, ona verdiğin anlamdır.
+                {why ? t('nida.byWords') : t('nida.byChance')}
               </Text>
             </Animated.View>
           )}
 
           {phase === 'library' && (
             <View style={{ marginTop: S.md }}>
-              {BOOKS.map(b => {
+              {BOOKS[lang].map(b => {
                 const open = openBook === b.id;
                 return (
                   <View key={b.id} style={styles.book}>
@@ -180,11 +182,6 @@ export function NidaSheet({ visible, onClose }: { visible: boolean; onClose: () 
   );
 }
 
-const WHY_SOURCE: Record<Why['source'], string> = {
-  niyet: 'Niyetindeki',
-  düşünce: 'Bugünkü düşüncendeki',
-  ayna: 'Bu haftaki aynandaki',
-};
 
 const styles = StyleSheet.create({
   sheet: { flex: 1, backgroundColor: C.bg },

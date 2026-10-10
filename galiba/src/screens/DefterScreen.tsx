@@ -11,29 +11,31 @@ import { weekSummary } from '../content/week';
 import { AynaDumbbells, CertaintyBars, PathProgress, WeekRitual } from '../components/Charts';
 import { ReportCard } from '../components/ReportCard';
 import { C, F, S, type, upper } from '../theme/tokens';
+import { localeOf, useT } from '../i18n';
 
 // Defter: kişisel kayıtlar yalnızca bu cihazda saklanır.
 export function DefterScreen() {
   const insets = useSafeAreaInsets();
   const { entries, doneDays, remove } = useStore();
-  const week = useMemo(() => weekSummary(entries), [entries]);
+  const { t, lang } = useT();
+  const week = useMemo(() => weekSummary(entries, new Date(), lang), [entries, lang]);
   const todayIndex = week.days.indexOf(today());
 
   const confirmRemove = (e: Entry) => {
     if (Platform.OS === 'web') return remove(e.id);
-    Alert.alert('Silinsin mi?', undefined, [
-      { text: 'Vazgeç', style: 'cancel' },
-      { text: 'Sil', style: 'destructive', onPress: () => remove(e.id) },
+    Alert.alert(t('common.deleteAsk'), undefined, [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('common.delete'), style: 'destructive', onPress: () => remove(e.id) },
     ]);
   };
 
   return (
     <ScrollView contentContainerStyle={[styles.wrap, { paddingTop: insets.top + S.lg }]} showsVerticalScrollIndicator={false}>
-      <Eyebrow>Defter</Eyebrow>
-      <Rich style={[type.display, { marginTop: S.sm }]}>{'Düşüncenin *izleri.*'}</Rich>
+      <Eyebrow>{t('defter.eyebrow')}</Eyebrow>
+      <Rich style={[type.display, { marginTop: S.sm }]}>{t('defter.title')}</Rich>
       <View style={{ height: S.xl }} />
 
-      <Eyebrow>{`Bu hafta · ${weekRange(week.days)}`}</Eyebrow>
+      <Eyebrow>{t('defter.week', { range: weekRange(week.days) })}</Eyebrow>
 
       <View style={styles.hero}>
         <Text style={styles.statN}>
@@ -41,40 +43,40 @@ export function DefterScreen() {
         </Text>
         <Text style={type.small}>
           {week.avgDelta === null
-            ? 'Bu hafta henüz ayna yok. Bir ayna, kesinliğinin nasıl değiştiğini burada gösterir.'
-            : `${week.aynas.length} aynada kesinliğin ortalama ${Math.abs(week.avgDelta)} puan ${week.avgDelta >= 0 ? 'yumuşadı' : 'arttı'}.`}
+            ? t('defter.noAyna')
+            : t(week.avgDelta >= 0 ? 'defter.softened' : 'defter.hardened', { n: week.aynas.length, d: Math.abs(week.avgDelta) })}
         </Text>
       </View>
 
-      <Section title="Ritüel">
+      <Section title={t('defter.ritual')}>
         <WeekRitual byDay={week.ritualByDay} todayIndex={todayIndex} />
       </Section>
 
       {week.aynas.length > 0 && (
-        <Section title="Ayna · önce ve sonra">
+        <Section title={t('defter.ayna')}>
           <AynaDumbbells aynas={week.aynas.slice(0, 5)} />
         </Section>
       )}
 
       {week.words.length > 0 && (
-        <Section title="En sık kesinlik kelimeleri">
+        <Section title={t('defter.words')}>
           <CertaintyBars words={week.words} />
         </Section>
       )}
 
-      <Section title="Yol">
+      <Section title={t('defter.path')}>
         <PathProgress done={doneDays} />
       </Section>
 
       <ReportCard week={week} />
 
       <View style={{ marginTop: S.xxl }}>
-        <Eyebrow>Kayıtlar</Eyebrow>
+        <Eyebrow>{t('defter.entries')}</Eyebrow>
       </View>
 
       {entries.length === 0 && (
         <Text style={[type.body, { marginTop: S.xl }]}>
-          Henüz boş. Bir ritüel adımı, bir ayna ya da bir nida burada iz bırakır. Kayıtların yalnızca bu cihazda kalır.
+          {t('defter.empty')}
         </Text>
       )}
 
@@ -82,7 +84,7 @@ export function DefterScreen() {
         <Pressable key={e.id} onLongPress={() => confirmRemove(e)} style={styles.entry}>
           <Text style={styles.meta}>
             {upper(`${fmt(e.date)}  ·  ${
-              e.kind === 'ayna' ? 'Ayna' : e.kind === 'nida' ? 'Nida' : RITUAL.find(r => r.key === e.step)?.title.replace(/\*/g, '') ?? ''
+              e.kind === 'ayna' ? t('defter.kindAyna') : e.kind === 'nida' ? t('defter.kindNida') : RITUAL[lang].find(r => r.key === e.step)?.title.replace(/\*/g, '') ?? ''
             }`)}
           </Text>
           {e.kind === 'ayna' ? (
@@ -106,13 +108,13 @@ export function DefterScreen() {
 
 const weekRange = (days: string[]) => {
   const [a, b] = [days[0], days[6]].map(d => new Date(`${d}T12:00:00`));
-  const month = (d: Date) => d.toLocaleDateString('tr-TR', { month: 'long' });
+  const month = (d: Date) => d.toLocaleDateString(localeOf(), { month: 'long' });
   return a.getMonth() === b.getMonth()
     ? `${a.getDate()}–${b.getDate()} ${month(b)}`
     : `${a.getDate()} ${month(a)} – ${b.getDate()} ${month(b)}`;
 };
 
-const fmt = (d: string) => new Date(`${d}T12:00:00`).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
+const fmt = (d: string) => new Date(`${d}T12:00:00`).toLocaleDateString(localeOf(), { day: 'numeric', month: 'long' });
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -124,7 +126,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function NidaItem({ passageId, reflection }: { passageId: string; reflection: string }) {
-  const p = passageById(passageId);
+  const { lang } = useT();
+  const p = passageById(passageId, lang);
   if (!p) return null;
   return (
     <>

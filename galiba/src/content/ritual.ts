@@ -1,4 +1,5 @@
-import { ArtName } from '../components/Art';
+import type { ArtName } from '../components/Art';
+import type { Lang } from '../i18n';
 
 // Günlük ritüel: farkındalık → düşünce → ihtimal → davranış.
 // Her adım tek bir soru. Az metin, tek alan.
@@ -15,7 +16,7 @@ export type RitualStep = {
   yes: string;
 };
 
-export const RITUAL: RitualStep[] = [
+const RITUAL_TR: RitualStep[] = [
   {
     key: 'beden',
     n: '01',
@@ -61,3 +62,36 @@ export const RITUAL: RitualStep[] = [
     yes: 'Dış “evet”',
   },
 ];
+
+const RITUAL_EN: RitualStep[] = [
+  {
+    key: 'beden', n: '01', title: 'Pause and *listen.*', minutes: 1, art: 'breath',
+    guide: 'Don’t try to change your breath. Just watch it for three breaths. If you like, imagine a warm light gathering in your chest.',
+    prompt: 'What is your body saying right now?',
+    placeholder: 'My shoulders are tight, my chest opened a little…',
+    yes: 'Inner “yes”',
+  },
+  {
+    key: 'dusunce', n: '02', title: 'Catch *the thought.*', minutes: 2, art: 'lens',
+    guide: 'Which sentence keeps circling in your mind today? Write it as it is, without fixing it.',
+    prompt: 'The thought that occupies you:',
+    placeholder: 'I will never finish this on time.',
+    yes: 'Noticed',
+  },
+  {
+    key: 'ihtimal', n: '03', title: 'Add a *possibility.*', minutes: 2, art: 'fork',
+    guide: 'You don’t have to believe it. Just put it on the table. The simplest ones often work best, galiba.',
+    prompt: 'What else could explain this?',
+    placeholder: 'Maybe I’m just tired and slow today.',
+    yes: 'Made room',
+  },
+  {
+    key: 'adim', n: '04', title: 'Choose a small *step.*', minutes: 2, art: 'stones',
+    guide: 'Something concrete, in tune with your new view, that takes less than ten minutes.',
+    prompt: 'Which one thing will you do today?',
+    placeholder: 'I’ll start the first half hour without my phone.',
+    yes: 'Outer “yes”',
+  },
+];
+
+export const RITUAL: Record<Lang, RitualStep[]> = { tr: RITUAL_TR, en: RITUAL_EN };

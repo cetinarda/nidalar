@@ -1,6 +1,8 @@
 // Günün sayıları: gün · ay · yılın rakam toplamı, bir de günün indirgenmiş sayısı.
 // Sayılar bir semboldür; dikkati toplar, kehanet değildir.
 
+import type { Lang } from '../i18n';
+
 const digitSum = (n: number) => String(n).split('').reduce((a, c) => a + Number(c), 0);
 
 function reduce(n: number): number {
@@ -13,7 +15,7 @@ const UNIT = ['', "'i", "'si", "'ü", "'ü", "'i", "'sı", "'si", "'i", "'u"];
 const TEN = ['', "'u", "'si", "'u"];
 const possessive = (n: number) => `${n}${n % 10 ? UNIT[n % 10] : TEN[n / 10]}`;
 
-export const MEANINGS: Record<number, { word: string; line: string }> = {
+const MEANINGS_TR: Record<number, { word: string; line: string }> = {
   1: { word: 'Başlangıç', line: 'Tanıdık bir şeye ilk kez bakar gibi bakmak için iyi bir gün, galiba.' },
   2: { word: 'Denge', line: 'İki tarafı da dinlemek için iyi bir gün.' },
   3: { word: 'İfade', line: 'Söylemeden önce bir ihtimal daha ekle.' },
@@ -28,7 +30,30 @@ export const MEANINGS: Record<number, { word: string; line: string }> = {
   33: { word: 'Şefkat', line: 'Kendine, başkasına gösterdiğin anlayışı göster.' },
 };
 
-export function dayNumbers(date = new Date()) {
+const MEANINGS_EN: Record<number, { word: string; line: string }> = {
+  1: { word: 'Beginning', line: 'A good day to look at something familiar as if for the first time, galiba.' },
+  2: { word: 'Balance', line: 'A good day to listen to both sides.' },
+  3: { word: 'Expression', line: 'Before you say it, add one more possibility.' },
+  4: { word: 'Ground', line: 'A good day to separate what you know from what you assume.' },
+  5: { word: 'Change', line: 'Let yourself change your mind.' },
+  6: { word: 'Care', line: 'Balance understanding with setting boundaries.' },
+  7: { word: 'Reflection', line: 'Watch quietly before you decide.' },
+  8: { word: 'Strength', line: 'Choose understanding over being right.' },
+  9: { word: 'Closure', line: 'A good day to let go of a judgment you carry.' },
+  11: { word: 'Intuition', line: 'Listen to your intuition, and count it as a possibility too.' },
+  22: { word: 'Builder', line: 'A small step is the first stone of a large structure.' },
+  33: { word: 'Compassion', line: 'Give yourself the understanding you give others.' },
+};
+
+const ordinal = (n: number) => {
+  const r = n % 100;
+  if (r >= 11 && r <= 13) return `${n}th`;
+  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
+};
+
+export const MEANINGS: Record<Lang, Record<number, { word: string; line: string }>> = { tr: MEANINGS_TR, en: MEANINGS_EN };
+
+export function dayNumbers(date = new Date(), lang: Lang = 'tr') {
   const d = date.getDate();
   const m = date.getMonth() + 1;
   const y = digitSum(date.getFullYear());
@@ -37,7 +62,9 @@ export function dayNumbers(date = new Date()) {
   return {
     d, m, y, n,
     symbol: `${d}·${m}·${y}`,
-    caption: `ayın ${possessive(d)} · yılın ${m}. ayı · rakamları ${y} eden bir yıl`,
-    meaning: MEANINGS[n],
+    caption: lang === 'tr'
+      ? `ayın ${possessive(d)} · yılın ${m}. ayı · rakamları ${y} eden bir yıl`
+      : `the ${ordinal(d)} day · the ${ordinal(m)} month · a year whose digits add to ${y}`,
+    meaning: MEANINGS[lang][n],
   };
 }
