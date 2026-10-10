@@ -6,6 +6,7 @@ import { Art } from '../components/Art';
 import { Rich } from '../components/Rich';
 import { Button } from '../components/ui';
 import { ESIK, Card } from '../content/esik';
+import { DayNumbers } from '../components/DayNumbers';
 import { C, F, S, type } from '../theme/tokens';
 
 // Eşik: 8 kartlık açılış serisi. Yatay kaydırılır, son kartta içeri geçilir.
@@ -76,33 +77,26 @@ export function EsikScreen({ onDone }: { onDone: () => void }) {
 }
 
 function CardView({ card }: { card: Card }) {
-  const isCover = card.title === '10·10·10';
-  const art = <Art name={card.art} height={isCover ? 260 : 220} />;
+  const art = <Art name={card.art} height={card.cover ? 250 : 210} />;
   return (
     <View>
       {card.artTop && art}
       {card.eyebrow && (
-        <Text style={[type.eyebrow, isCover && styles.coverEyebrow, { marginTop: card.artTop ? S.lg : S.md }]}>
-          {card.eyebrow}
-        </Text>
+        <Text style={[type.eyebrow, card.cover && styles.coverEyebrow, { marginTop: S.md }]}>{card.eyebrow}</Text>
       )}
-      {card.title && (
-        isCover
-          ? <Text style={styles.cover}>{card.title}</Text>
-          : <Rich style={[type.display, { marginTop: S.sm }]}>{card.title}</Rich>
-      )}
-      {(isCover ? card.paragraphs.slice(0, 1) : card.paragraphs).map((p, k) => (
-        <Rich key={k} style={[isCover ? styles.coverSub : type.body, { marginTop: S.md }]}>{p}</Rich>
+      {card.cover && <View style={{ marginTop: S.lg }}><DayNumbers /></View>}
+      {card.title && <Rich style={[type.display, { marginTop: card.artTop ? S.lg : S.sm }]}>{card.title}</Rich>}
+      {card.paragraphs.map((p, k) => (
+        <Rich key={k} style={[card.cover ? styles.coverHook : type.body, { marginTop: S.md }]}>{p}</Rich>
       ))}
-      {card.list?.map(item => (
-        <View key={item.n} style={styles.listRow}>
+      {card.list?.map((item, k) => (
+        <View key={k} style={styles.listRow}>
           <Text style={styles.listN}>{item.n}</Text>
           <Text style={[type.body, { flex: 1 }]}>{item.text}</Text>
         </View>
       ))}
       {card.coda && <Rich style={[type.body, styles.coda]}>{card.coda}</Rich>}
       {!card.artTop && <View style={{ marginTop: S.lg }}>{art}</View>}
-      {isCover && <Rich style={[type.body, styles.coverHook]}>{card.paragraphs[1]}</Rich>}
     </View>
   );
 }
@@ -113,12 +107,7 @@ const styles = StyleSheet.create({
   brand: { fontFamily: F.italic, fontSize: 22, color: C.ink },
   page: { paddingHorizontal: S.lg, paddingBottom: S.xl },
   coverEyebrow: { color: C.gold, textAlign: 'center', letterSpacing: 6 },
-  cover: {
-    fontFamily: F.serif, fontSize: 64, color: C.ink, textAlign: 'center', marginTop: S.md,
-    textShadowColor: 'rgba(255,240,220,0.35)', textShadowRadius: 18,
-  },
-  coverSub: { ...type.small, textAlign: 'center' },
-  coverHook: { fontSize: 20, lineHeight: 30, color: C.ink, textAlign: 'center', marginTop: S.md },
+  coverHook: { ...type.body, fontSize: 20, lineHeight: 30, color: C.ink, textAlign: 'center' },
   listRow: { flexDirection: 'row', gap: S.md, marginTop: S.md },
   listN: { fontFamily: F.regular, fontSize: 17, lineHeight: 27, color: C.gold },
   coda: { marginTop: S.lg, color: C.ink },

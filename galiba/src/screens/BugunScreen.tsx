@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleShee
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { Art } from '../components/Art';
+import { DayNumbers } from '../components/DayNumbers';
 import { Rich } from '../components/Rich';
 import { Button, Eyebrow } from '../components/ui';
 import { RITUAL, RitualStep } from '../content/ritual';
@@ -30,7 +31,9 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={[styles.wrap, { paddingTop: insets.top + S.lg }]} showsVerticalScrollIndicator={false}>
         <Eyebrow>{dateLabel()}</Eyebrow>
-        <Rich style={[type.display, { marginTop: S.sm }]}>{'Bugünün *eşiği.*'}</Rich>
+        <View style={{ marginTop: S.sm }}>
+          <DayNumbers size="compact" />
+        </View>
 
         <View style={styles.day}>
           <Text style={styles.dayN}>Gün {day.n} / 21</Text>
@@ -61,7 +64,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
 
         {doneSteps.size === 4 && (
           <Rich style={[type.body, { marginTop: S.lg, color: C.ink }]}>
-            {'Enerjetik ve fiziksel *“EVET”*. Bugünlük bu kadar yeter.'}
+            {'İç ve dış *“evet”*. Bugünlük bu kadar yeter.'}
           </Rich>
         )}
 
@@ -102,7 +105,7 @@ function RitualSheet({ step, onClose }: { step: RitualStep | null; onClose: () =
         <ScrollView contentContainerStyle={[styles.wrap, { paddingTop: S.lg, paddingBottom: insets.bottom + S.xl }]}
           keyboardShouldPersistTaps="handled">
           <View style={styles.sheetTop}>
-            <Eyebrow>{`Adım ${step.n}${step.key === 'sarj' ? ' · ritüel' : ''}`}</Eyebrow>
+            <Eyebrow>{`Adım ${step.n}${step.key === 'beden' ? ' · ritüel' : ''}`}</Eyebrow>
             <Button quiet label="Kapat" onPress={onClose} />
           </View>
           <Art name={step.art} height={200} />
@@ -118,9 +121,9 @@ function RitualSheet({ step, onClose }: { step: RitualStep | null; onClose: () =
             style={styles.input}
           />
           <Button label={step.yes} onPress={save} style={{ marginTop: S.lg }} />
-          {step.key === 'sarj' && (
+          {step.key === 'beden' && (
             <Text style={[type.small, { marginTop: S.md, textAlign: 'center' }]}>
-              Ritüel bir semboldür; dikkatini toplar, bilim iddiası taşımaz.
+              Bu bir imgeleme pratiği; dikkatini toplar, bilim iddiası taşımaz.
             </Text>
           )}
         </ScrollView>

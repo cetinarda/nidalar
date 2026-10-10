@@ -1,13 +1,13 @@
 import { ArtName } from '../components/Art';
 
-// "Eşik" — uygulamanın açılış serisi ve temel alt metni.
-// Kaynak: 8 kartlık İngilizce seri (bkz. docs/kaynak-ceviri.md).
-// Uyarlama ilkesi: ritüeli koru, kesinlik iddiasını "galiba"ya çevir.
+// "Eşik": Galiba'nın açılış serisi. Kapak her gün o günün sayılarını taşır.
+// Görsel dil referans seriden ilham alır; metin Galiba'nın kendi sesidir.
 // `*...*` altın italik vurgudur.
 
 export type Card = {
   art: ArtName;
   artTop: boolean;
+  cover?: boolean;
   eyebrow?: string;
   title?: string;
   paragraphs: string[];
@@ -18,92 +18,63 @@ export type Card = {
 
 export const ESIK: Card[] = [
   {
-    art: 'portal',
+    art: 'window',
     artTop: false,
-    eyebrow: 'Eşik açık',
-    title: '10·10·10',
-    paragraphs: [
-      'ayın 10’u · yılın 10. ayı · rakamları 10 eden bir yıl',
-      'Bu eşikte *gerçekten ne yapılır* ve bu gün neden *bu kadar güçlü hissettirir?*',
-    ],
+    cover: true,
+    eyebrow: 'Bugünün eşiği',
+    paragraphs: ['Bugün de *bir ihtimal daha* var.'],
   },
   {
-    art: 'moon',
+    art: 'mirror',
     artTop: false,
-    title: 'Bugün *Terazi’deki yeni ay*, 10.10 eşiğiyle buluşuyor.',
-    paragraphs: ['Bu yüzden güçlü bir niyet anı:'],
+    title: 'Bir düşünce, *bir gerçek değildir.*',
+    paragraphs: ['Zihin hızlı karar verir. Çoğu zaman da yorumunu gerçeğin kendisi sanır.'],
     list: [
-      { n: '01', text: 'Yeni ay boşluğu simgeler. Henüz şekillenmemiş olanı; her yaratımdan önceki o sessiz kuyuyu.' },
-      { n: '02', text: '10, bir döngünün kapanışı ve yenisinin açılışıdır. Yeni bir yol başlıyor, yönünü sen seçiyorsun.' },
+      { n: '→', text: '“Bu kesinlikle böyle.”  Ben şu an böyle görüyorum.' },
+      { n: '→', text: '“Bunu bilerek yaptı.”  Başka bir açıklaması olabilir mi?' },
+      { n: '→', text: '“Asla değişmez.”  Henüz değiştiğini görmedim.' },
     ],
-    coda: 'Gün, kullansan da kullanmasan da akıyor. Bugün onun *neyi inşa edeceğine* sen karar verebilirsin.',
-    next: 'Peki ya takvim?',
+    next: 'Peki nereden başlamalı?',
   },
   {
-    art: 'seed',
-    artTop: false,
-    title: '“Ama takvim *doğru bile değil.*”',
+    art: 'lens',
+    artTop: true,
+    title: 'Kesinlik kelimeleri *ipucudur.*',
     paragraphs: [
-      'Haklı olabilirsin. Takvim gökyüzünün değil, insanların çizdiği bir harita. Öyleyse bir tarih nasıl anlam taşır?',
-      'Galiba iki sebepten.',
+      '“Her zaman”, “asla”, “herkes”, “hiç”. Yanlış değiller; ama yorumun nerede başladığını gösterirler.',
+      'Galiba onları yazarken fark eder ve tek bir şey sorar: *Ne kadarı gözlem, ne kadarı yorum?*',
     ],
+  },
+  {
+    art: 'breath',
+    artTop: true,
+    title: 'Her gün *dört küçük adım.*',
+    paragraphs: ['Yedi dakika. Önce içeride, sonra dışarıda.'],
     list: [
-      { n: '01', text: 'Paylaşılan anlam. Milyonlarca insan bugüne aynı anlamı yüklediğinde ortak bir alan oluşur. Bazı gelenekler buna egregor der. En azından bir şeyi kesin yapar: dikkatimizi toplar.' },
-      { n: '02', text: 'Semboller zihne yön verir. Bir sayı tek başına dünyayı değiştirmeyebilir; ama dikkatini bir niyete çevirmen için güçlü bir işarettir. Tarih sembolik, çünkü ona anlamı biz veriyoruz.' },
+      { n: '01', text: 'Dur ve bedenini dinle.' },
+      { n: '02', text: 'Seni meşgul eden düşünceyi yakala.' },
+      { n: '03', text: 'Yanına bir ihtimal ekle.' },
+      { n: '04', text: 'Küçük, somut bir adım seç.' },
     ],
-    next: 'Öyleyse bugün ne yapmalı?',
+    coda: 'Biri iç *“evet”*, biri dış *“evet”*.',
   },
   {
-    art: 'battery',
-    artTop: true,
-    eyebrow: 'Adım 01',
-    title: 'Pilini *şarj et.*',
-    paragraphs: [
-      'Çoğumuz bardağımızı doldurmadan istemeye, üretmeye, dağıtmaya atlarız.',
-      'Bugünü bir yakıt gibi düşün. Ama bu yakıt *yeni ihtimallerini* besliyor.',
-      'Önce almaya zaman ayır. Işığın bedenine indiğini, seni ılık, altın bir dolgunlukla bir pil gibi doldurduğunu hayal et.',
-    ],
-    coda: '*Bu senin enerjetik “EVET”in.*',
-  },
-  {
-    art: 'book',
+    art: 'layers',
     artTop: false,
-    eyebrow: 'Adım 02',
-    title: 'Tek bir *dilek tut.*',
+    title: 'Esnediğini *görürsün.*',
     paragraphs: [
-      'Yürümek istediğin yolu netleştir. Sonra o yolu zaten yaşayan *sen* hakkında yaz.',
-      'Gerçekten ne istiyorsun, ama gerçekten?\nOraya varmak için ne yaptı?\nŞu an sana ne söylerdi?',
+      'Bir düşünceye ne kadar inandığını önce ve sonra işaretlersin. %90’dan %60’a inen bir sayı, ezberlenmiş bir olumlamadan daha çok şey söyler.',
+      'Seri yok, puan yok. Sadece *kesinliğinin nasıl yumuşadığı.*',
     ],
-    coda: '*Adımları galiba zaten biliyorsun.*',
   },
   {
-    art: 'path',
+    art: 'fork',
     artTop: true,
-    eyebrow: 'Adım 03',
-    title: 'Yaşam *senaryonu* yaz.',
+    title: 'Her ihtimale açık ol. *Ama hepsine aynı ölçüde inanma.*',
     paragraphs: [
-      'Seçtiğin hayatın haritasını çıkar; eşik kapandığında da yönünü kaybetme.',
-      'Bu bir bilim iddiası değil, zihnin yön bulma biçimi: Yazdığını görürsün, gördüğünü fark edersin, fark ettiğini *seçersin.*',
+      'İlk okuman bazen doğrudur. Anlamak, mazur görmek değildir; esnek düşünmek, sınırını korumayı da içerir.',
+      'Günün sayıları ve ritüeller birer semboldür. Dikkatini toplarlar; kehanet değildirler.',
     ],
-  },
-  {
-    art: 'door',
-    artTop: false,
-    eyebrow: 'Adım 04',
-    title: 'Hizalı *bir adım* at.',
-    paragraphs: [
-      'Çağırdığın hayatı yaşayan kişinin bugün yapacağı *TEK* bir şeyi yap.',
-      'Bu, kendine ve inandığın her neyse ona *ciddi olduğunu* gösterir.',
-    ],
-    coda: '*Bu senin fiziksel “EVET”in.*',
-  },
-  {
-    art: 'keyhole',
-    artTop: true,
-    paragraphs: [
-      'Niyet yön verir. Gün her hâlükârda akıyor; en güçlü hâli, içindeki özle *nereye gideceğine karar verdiğinde.*',
-    ],
-    title: 'Eşikten *geç.*',
-    coda: 'Ve kendi yaşam senaryonu yazmaya başla.',
+    coda: 'Hazırsan, *eşikten geç.*',
   },
 ];

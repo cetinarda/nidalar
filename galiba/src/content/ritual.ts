@@ -1,10 +1,10 @@
 import { ArtName } from '../components/Art';
 
-// Günlük ritüel: Eşik serisindeki dört adımın her gün tekrarlanabilir hâli.
+// Günlük ritüel: farkındalık → düşünce → ihtimal → davranış.
 // Her adım tek bir soru. Az metin, tek alan.
 
 export type RitualStep = {
-  key: 'sarj' | 'dilek' | 'senaryo' | 'adim';
+  key: 'beden' | 'dusunce' | 'ihtimal' | 'adim';
   n: string;
   title: string;
   minutes: number;
@@ -17,47 +17,47 @@ export type RitualStep = {
 
 export const RITUAL: RitualStep[] = [
   {
-    key: 'sarj',
+    key: 'beden',
     n: '01',
-    title: 'Pilini *şarj et.*',
+    title: 'Dur ve *dinle.*',
     minutes: 1,
-    art: 'battery',
-    guide: 'Nefesini değiştirmeye çalışma. Işığın başının üstünden inip göğsünde biriktiğini hayal et. Bedeninde ne fark ediyorsun?',
+    art: 'breath',
+    guide: 'Nefesini değiştirmeye çalışma. Üç nefes boyunca yalnızca izle. İstersen ılık bir ışığın göğsünde biriktiğini hayal et.',
     prompt: 'Bedenin şu an ne söylüyor?',
     placeholder: 'Omuzlarım sıkı, göğsüm biraz açıldı…',
-    yes: 'Enerjetik “EVET”',
+    yes: 'İç “evet”',
   },
   {
-    key: 'dilek',
+    key: 'dusunce',
     n: '02',
-    title: 'Tek bir *dilek tut.*',
+    title: 'Düşünceni *yakala.*',
     minutes: 2,
-    art: 'book',
-    guide: 'Bir tane. Çok değil. Sonra onu zaten yaşayan sana sor: Oraya nasıl vardın?',
-    prompt: 'Gerçekten ne istiyorsun, ama gerçekten?',
-    placeholder: 'Kendime daha adil davranan biri olmak…',
-    yes: 'Netlik',
+    art: 'lens',
+    guide: 'Bugün zihninde en çok dönen cümle hangisi? Onu düzeltmeden, olduğu gibi yaz.',
+    prompt: 'Seni meşgul eden düşünce:',
+    placeholder: 'Bu işi asla zamanında bitiremeyeceğim.',
+    yes: 'Fark ettim',
   },
   {
-    key: 'senaryo',
+    key: 'ihtimal',
     n: '03',
-    title: 'Senaryona *bir satır* ekle.',
+    title: 'Bir *ihtimal* ekle.',
     minutes: 2,
-    art: 'path',
-    guide: 'Şimdiki zamanda, kendi sesinle yaz. Abartma; inanabileceğin bir cümle seç. Galiba en güçlü cümleler en sade olanlardır.',
-    prompt: 'O hayattan bir gün, tek cümle:',
-    placeholder: 'Sabahları telefona değil, pencereye bakıyorum…',
-    yes: 'Yön',
+    art: 'fork',
+    guide: 'Doğru olduğuna inanman gerekmiyor. Yalnızca masaya koy. Galiba en işe yarayanlar en sade olanlardır.',
+    prompt: 'Bunun başka bir açıklaması ne olabilir?',
+    placeholder: 'Belki sadece yorgunum ve bugün yavaşım.',
+    yes: 'Alan açtım',
   },
   {
     key: 'adim',
     n: '04',
-    title: 'Hizalı *bir adım* at.',
+    title: 'Küçük bir *adım* seç.',
     minutes: 2,
-    art: 'door',
-    guide: 'Bugün, bu yolu yaşayan kişinin yapacağı küçük, somut bir şey. On dakikadan kısa sürsün.',
+    art: 'stones',
+    guide: 'Yeni bakış açınla uyumlu, on dakikadan kısa süren somut bir şey.',
     prompt: 'Bugün hangi tek şeyi yapacaksın?',
-    placeholder: 'Ertelediğim o mesajı göndereceğim.',
-    yes: 'Fiziksel “EVET”',
+    placeholder: 'İlk yarım saatini telefonsuz başlatacağım.',
+    yes: 'Dış “evet”',
   },
 ];

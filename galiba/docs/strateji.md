@@ -9,7 +9,7 @@ Galiba'nın gücü adında. *Galiba* Türkçede kesinliği yumuşatan bir kelime
 Taslaktaki fikirler (nörobilim, sanat, spiritüellik, olumlama, 21 gün, ayna, dedektör…) tek tek iyi, ama hepsi birden ürünü kalabalıklaştırır. Önerim, ürünü **tek bir ölçü ve tek bir ritüel** etrafında toplamak.
 
 1. **Tek ölçü: inanç farkı.** "Bu düşünceye ne kadar inanıyorsun?" sorusu önce ve sonra sorulur, örneğin %90'dan %50'ye. Kullanıcı esnemeyi ilk kez bir sayı olarak *görür*. Bu, rakiplerin hiçbirinin göstermediği bir şey. Seri sayacı (streak) yok; suçluluk değil, merak üretmek istiyoruz.
-2. **Tek ritüel: dört adım, 7 dakika.** Referans serideki yapıdan geliyor: şarj et, dilek tut, senaryo yaz, hizalı adım at. Biri iç "EVET", biri dış "EVET". Spiritüel kullanıcı burada evinde hissediyor, şüpheci kullanıcı da rahatsız olmuyor, çünkü ritüel "sembol" olarak etiketli.
+2. **Tek ritüel: dört adım, 7 dakika.** Adımlar: dur ve dinle, düşünceni yakala, bir ihtimal ekle, küçük bir adım seç. Biri iç "evet", biri dış "evet". Spiritüel kullanıcı burada evinde hissediyor, şüpheci kullanıcı da rahatsız olmuyor, çünkü ritüel "sembol" olarak etiketli.
 3. **Tek araç: İhtimal Aynası.** Her ekranda tek soru, çoğu dokunarak cevaplanıyor. Kesinlik kelimeleri *yazarken* altın renkle işaretleniyor: "hiç", "herkes", "hep". Tasarımın en kısa öğretisi bu.
 
 Bilinçli olarak dışarıda bırakılanlar (sonraki sürümler için): yapay zekâ sohbeti, topluluk, ses içerikleri, Reiki modülü, renkli duygu haritaları. Bunlar özü sulandırır ve üründeki gürültüyü artırır.
@@ -30,7 +30,7 @@ Bilinçli olarak dışarıda bırakılanlar (sonraki sürümler için): yapay ze
 1. **Kesinlikten ihtimale, ölçülebilir hâlde.** Her aynanın sonunda önce/sonra çubuğu var. Defterin tepesindeki tek sayı da "kesinliğin ortalama 40 puan yumuşadı".
 2. **Kesinlik dedektörü.** "Asla, herkes, hep, kesin" gibi kelimeleri yanlış ilan etmeden gösteriyor: "Ne kadarı gözlem, ne kadarı yorum?" Ucuz bir özellik, ama kolay taşınabilir bir beceri öğretiyor ve marka adıyla aynı şeyi söylüyor.
 3. **Köprü olumlamalar.** "Yeterince iyiyim" yerine "Kendime daha adil davranmayı öğrenebilirim". Wood, Perunovic ve Lee (2009), öz saygısı düşük kişilerde aşırı olumlu cümlelerin ruh hâlini kötüleştirebildiğini gösterdi. Galiba her olumlamayı kullanıcının inanç oranına ve küçük bir eyleme bağlıyor.
-4. **Dürüst ritüel.** Ay ve tarih ritüelleri "sembol" etiketiyle sunuluyor. Bu sayede Moonly ve Co-Star kitlesine güven kaybetmeden ulaşılabiliyor. Referans serideki "Ama takvim doğru bile değil" itirazına da kartın içinde dürüstçe cevap veriliyor.
+4. **Dürüst ritüel.** Ay ve tarih ritüelleri "sembol" etiketiyle sunuluyor. Bu sayede Moonly ve Co-Star kitlesine güven kaybetmeden ulaşılabiliyor. Kapakta her gün o günün sayıları ve kısa bir yorumu var; o da sembol olarak sunuluyor.
 5. **"İlk okuman doğru olabilir" çıkışı.** Esneklik, her şeyi mazur görmek değil. Aynada "ilk okumam galiba doğru" seçeneği var; seçilirse sınır koymak da esnek düşünmenin parçası olarak sunuluyor. Rakiplerin "toksik pozitiflik" riskine karşı bilinçli bir tasarım kararı.
 6. **Türkçe ve sade.** Çeviri değil, Türkçe düşünülmüş bir dil. "Galiba" kelimesinin kendisi bir ürün mekaniği.
 
