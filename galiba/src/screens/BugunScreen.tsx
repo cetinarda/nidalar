@@ -7,6 +7,7 @@ import { DayNumbers } from '../components/DayNumbers';
 import { Rich } from '../components/Rich';
 import { Button, Eyebrow } from '../components/ui';
 import { RITUAL, RitualStep } from '../content/ritual';
+import { NidaSheet } from './NidaSheet';
 import { PROGRAM } from '../content/program';
 import { today, useStore } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
@@ -21,6 +22,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
   const insets = useSafeAreaInsets();
   const { entries, doneDays } = useStore();
   const [open, setOpen] = useState<RitualStep | null>(null);
+  const [nida, setNida] = useState(false);
 
   const todays = entries.filter(e => e.kind === 'ritual' && e.date === today());
   const doneSteps = new Set(todays.map(e => (e.kind === 'ritual' ? e.step : '')));
@@ -68,12 +70,20 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
           </Rich>
         )}
 
+        <Pressable onPress={() => setNida(true)} style={({ pressed }) => [styles.nida, pressed && { opacity: 0.6 }]}
+          accessibilityRole="button">
+          <Eyebrow>Nida</Eyebrow>
+          <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{'Bir *nida* gelsin.'}</Rich>
+          <Text style={[type.small, { marginTop: 2 }]}>Dokuz gelenekten bir söz; anlamını sen ver.</Text>
+        </Pressable>
+
         <Pressable onPress={onOpenEsik} style={{ marginTop: S.xxl, alignSelf: 'center' }}>
           <Text style={type.small}>Eşik serisini yeniden aç  →</Text>
         </Pressable>
       </ScrollView>
 
       <RitualSheet step={open} onClose={() => setOpen(null)} />
+      <NidaSheet visible={nida} onClose={() => setNida(false)} />
     </View>
   );
 }
@@ -141,6 +151,7 @@ const styles = StyleSheet.create({
   stepN: { width: 24, fontFamily: F.regular, fontSize: 14, color: C.inkMuted },
   stepTitle: { flex: 1, fontFamily: F.light, fontSize: 20, color: C.ink },
   sheet: { flex: 1, backgroundColor: C.bg },
+  nida: { marginTop: S.xl, paddingVertical: S.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: C.line },
   sheetTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   input: {
     marginTop: S.sm, minHeight: 96, fontFamily: F.light, fontSize: 17, lineHeight: 26, color: C.ink,

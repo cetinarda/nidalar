@@ -6,7 +6,7 @@ import { C } from '../theme/tokens';
 // Dil: yarım ton nokta dokusu, parlayan ince çizgi, tek altın odak.
 // Her illüstrasyon kendi id önekini kullanır; web'de çakışma olmasın.
 
-export type ArtName = 'window' | 'lens' | 'layers' | 'mirror' | 'fork' | 'breath' | 'stones';
+export type ArtName = 'window' | 'lens' | 'layers' | 'mirror' | 'fork' | 'breath' | 'stones' | 'echo';
 
 function Dots({ id, color, step = 6, r = 1.4 }: { id: string; color: string; step?: number; r?: number }) {
   return (
@@ -167,6 +167,20 @@ function render(name: ArtName, p: string) {
           ))}
           <Circle cx={156} cy={58} r={30} fill={gold} opacity={0.5} mask={fade} />
           <Circle cx={156} cy={58} r={6} fill={C.gold} />
+        </G>
+      );
+    // Yankı: uzaktan gelen bir ses, dalga dalga.
+    case 'echo':
+      return (
+        <G>
+          <Circle cx={96} cy={120} r={44} fill={gold} opacity={0.6} mask={fade} />
+          {[44, 72, 100, 128].map((r, i) => (
+            <Path key={r} d={`M ${96 + r * 0.6} ${120 - r * 0.8} A ${r} ${r} 0 0 1 ${96 + r * 0.6} ${120 + r * 0.8}`}
+              stroke={i === 0 ? C.coral : C.lilac} strokeOpacity={i === 0 ? 1 : 0.85 - i * 0.2}
+              strokeWidth={i === 0 ? 2 : 1.4} strokeDasharray={i === 2 ? '1 5' : undefined}
+              strokeLinecap="round" fill="none" />
+          ))}
+          <Circle cx={96} cy={120} r={7} fill={C.gold} />
         </G>
       );
   }

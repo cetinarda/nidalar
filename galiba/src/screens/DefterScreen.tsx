@@ -5,6 +5,7 @@ import { BeliefDelta } from '../components/Belief';
 import { Rich } from '../components/Rich';
 import { Eyebrow } from '../components/ui';
 import { RITUAL } from '../content/ritual';
+import { passageById } from '../content/nida';
 import { Entry, useStore } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
 
@@ -41,7 +42,7 @@ export function DefterScreen() {
 
       {entries.length === 0 && (
         <Text style={[type.body, { marginTop: S.xl }]}>
-          Henüz boş. Bir ritüel adımı ya da bir ayna burada iz bırakır. Kayıtların yalnızca bu cihazda kalır.
+          Henüz boş. Bir ritüel adımı, bir ayna ya da bir nida burada iz bırakır. Kayıtların yalnızca bu cihazda kalır.
         </Text>
       )}
 
@@ -50,7 +51,7 @@ export function DefterScreen() {
           <Text style={styles.meta}>
             {new Date(e.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}
             {'  ·  '}
-            {e.kind === 'ayna' ? 'Ayna' : RITUAL.find(r => r.key === e.step)?.title.replace(/\*/g, '')}
+            {e.kind === 'ayna' ? 'Ayna' : e.kind === 'nida' ? 'Nida' : RITUAL.find(r => r.key === e.step)?.title.replace(/\*/g, '')}
           </Text>
           {e.kind === 'ayna' ? (
             <>
@@ -60,6 +61,8 @@ export function DefterScreen() {
               </View>
               {!!e.bridge && <Rich style={[type.small, { marginTop: S.sm }]}>{`*${e.bridge}*`}</Rich>}
             </>
+          ) : e.kind === 'nida' ? (
+            <NidaItem passageId={e.passageId} reflection={e.reflection} />
           ) : (
             <Text style={[type.body, { marginTop: S.xs }]}>{e.text || '—'}</Text>
           )}
@@ -69,10 +72,23 @@ export function DefterScreen() {
   );
 }
 
+function NidaItem({ passageId, reflection }: { passageId: string; reflection: string }) {
+  const p = passageById(passageId);
+  if (!p) return null;
+  return (
+    <>
+      <Text style={styles.nidaText}>“{p.text}”</Text>
+      <Text style={type.small}>{p.book.author}</Text>
+      {!!reflection && <Text style={[type.body, { marginTop: S.sm }]}>{reflection}</Text>}
+    </>
+  );
+}
+
 const styles = StyleSheet.create({
   wrap: { paddingHorizontal: S.lg, paddingBottom: S.xxl, maxWidth: 520, width: '100%', alignSelf: 'center' },
   stat: { marginTop: S.xl, paddingVertical: S.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: C.line },
   statN: { fontFamily: F.serif, fontSize: 48, color: C.gold },
   entry: { paddingVertical: S.lg, borderBottomWidth: 1, borderColor: C.line },
+  nidaText: { fontFamily: F.italic, fontSize: 20, lineHeight: 28, color: C.ink, marginTop: S.xs },
   meta: { fontFamily: F.regular, fontSize: 12, letterSpacing: 1.5, color: C.inkMuted, textTransform: 'uppercase' },
 });

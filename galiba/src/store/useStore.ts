@@ -13,7 +13,15 @@ export type AynaEntry = {
   bridge: string;
   firstReadRight: boolean;
 };
-export type Entry = RitualEntry | AynaEntry;
+export type NidaEntry = {
+  kind: 'nida';
+  id: string;
+  date: string;
+  passageId: string;
+  intention: string;
+  reflection: string;
+};
+export type Entry = RitualEntry | AynaEntry | NidaEntry;
 
 type State = { entries: Entry[]; doneDays: number[]; seenEsik: boolean };
 
@@ -56,6 +64,10 @@ export function useGalibaState() {
     update(s => ({ ...s, entries: [{ ...e, kind: 'ayna', id: uid(), date: today() }, ...s.entries] }));
   }, [update]);
 
+  const saveNida = useCallback((e: Omit<NidaEntry, 'kind' | 'id' | 'date'>) => {
+    update(s => ({ ...s, entries: [{ ...e, kind: 'nida', id: uid(), date: today() }, ...s.entries] }));
+  }, [update]);
+
   const toggleDay = useCallback((n: number) => {
     update(s => ({
       ...s,
@@ -70,8 +82,8 @@ export function useGalibaState() {
   }, [update]);
 
   return useMemo(
-    () => ({ ...state, ready, saveRitual, saveAyna, toggleDay, markEsikSeen, remove }),
-    [state, ready, saveRitual, saveAyna, toggleDay, markEsikSeen, remove],
+    () => ({ ...state, ready, saveRitual, saveAyna, saveNida, toggleDay, markEsikSeen, remove }),
+    [state, ready, saveRitual, saveAyna, saveNida, toggleDay, markEsikSeen, remove],
   );
 }
 

@@ -8,7 +8,8 @@ Kesinlikten ihtimale. Günde 7 dakikalık bir düşünce esnekliği ritüeli.
 ## Yapı
 
 - **Eşik**: 6 kartlık açılış serisi; kapakta günün sayıları (`src/content/esik.ts`, `src/content/numbers.ts`)
-- **Bugün**: günün sayıları, günün fikri ve dört adımlı ritüel
+- **Bugün**: günün sayıları, günün fikri, dört adımlı ritüel ve Nida
+- **Nida**: Nidalar'dan gelen söz çekme ritüeli (9 gelenek, 72 söz); söz geldikten sonra "Bu söz sana hangi ihtimali hatırlatıyor?" diye sorar (`src/content/nida.ts`)
 - **Ayna**: İhtimal Aynası; kesinlik dedektörü, önce/sonra inanç oranı, köprü cümle
 - **Yol**: 21 günlük program
 - **Defter**: yalnızca cihazda saklanan kayıtlar
