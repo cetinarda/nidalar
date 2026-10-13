@@ -47,6 +47,7 @@ function Shell() {
   React.useEffect(() => {
     if (Platform.OS === 'web' && typeof document !== 'undefined') document.documentElement.lang = lang;
   }, [lang]);
+  React.useEffect(() => installWebTouchFixes(), []);
   const [tab, setTab] = useState<Tab>('bugun');
   const [esik, setEsik] = useState(!seenEsik);
 
@@ -81,6 +82,25 @@ function Shell() {
       </View>
     </View>
   );
+}
+
+// Mobil web'de uygulama gibi davransın: basılı tutunca yazı seçilmesin, kopyala menüsü
+// açılmasın, dokunuş vurgusu görünmesin. Yazı alanları seçilebilir kalır.
+function installWebTouchFixes() {
+  if (Platform.OS !== 'web' || typeof document === 'undefined') return;
+  if (document.getElementById('galiba-touch')) return;
+  const style = document.createElement('style');
+  style.id = 'galiba-touch';
+  style.textContent = `
+    html, body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+    input, textarea { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+  `;
+  document.head.appendChild(style);
+  document.addEventListener('contextmenu', e => {
+    const el = e.target as HTMLElement | null;
+    if (!el || !el.closest('input, textarea')) e.preventDefault();
+  });
 }
 
 const styles = StyleSheet.create({

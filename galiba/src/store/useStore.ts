@@ -32,6 +32,8 @@ export type RezonansEntry = {
   zihin: number;
   places: string[];
   verdict: string;
+  answer?: string;
+  reply?: string;
 };
 export type Entry = RitualEntry | AynaEntry | NidaEntry | RezonansEntry;
 

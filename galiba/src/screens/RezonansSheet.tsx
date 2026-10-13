@@ -8,12 +8,20 @@ import { CHANNEL_COLOR, Convergence, Orb } from '../components/Resonance';
 import { Channel, CHANNELS, PLACES, readVerdict, resonance, Scores, VERDICTS } from '../content/rezonans';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n';
+import { localReply } from '../content/rezonansYanit';
+
+const REZ_URL = process.env.EXPO_PUBLIC_REZONANS_URL || '/api/rezonans';
 import { C, F, S, type, upper } from '../theme/tokens';
 
 // Rezonans: fikir → küreye dokun (7 sn) → kalp → beden → zihin → üç yol birleşir → okuma.
 type Phase = 'idea' | 'touch' | Channel | 'merge';
 
 const HOLD_MS = 7000;
+
+// Mobil web: uzun basışta yazı seçimi, kopyala menüsü ve kaydırma olmasın.
+const NO_SELECT = Platform.OS === 'web'
+  ? ({ userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none', touchAction: 'none' } as any)
+  : null;
 const ORDER: Channel[] = ['kalp', 'beden', 'zihin'];
 
 export function RezonansSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
@@ -30,6 +38,9 @@ export function RezonansSheet({ visible, onClose }: { visible: boolean; onClose:
   const [hint, setHint] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [answer, setAnswer] = useState('');
+  const [reply, setReply] = useState<{ reply: string; step: string } | null>(null);
+  const [asking, setAsking] = useState(false);
 
   const held = useRef(false);
   const prog = useRef(0);
@@ -89,6 +100,8 @@ export function RezonansSheet({ visible, onClose }: { visible: boolean; onClose:
     setHint(false);
     setRevealed(false);
     setSaved(false);
+    setAnswer('');
+    setReply(null);
   };
 
   const close = () => {
@@ -105,9 +118,40 @@ export function RezonansSheet({ visible, onClose }: { visible: boolean; onClose:
   const chosen = def ? def.options.find(o => o.value === answers[def.key]) : undefined;
 
   const save = () => {
-    saveRezonans({ idea: idea.trim(), ...scores, places, verdict });
+    saveRezonans({ idea: idea.trim(), ...scores, places, verdict, answer: answer.trim() || undefined, reply: reply ? `${reply.reply} ${reply.step}` : undefined });
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     setSaved(true);
+  };
+
+  // Okumanın sorusuna cevap → ikinci yanıt. Önce sunucu (Groq), olmazsa cihazdaki kurallı yanıt.
+  const respond = async () => {
+    const a = answer.trim();
+    if (!a) return;
+    setAsking(true);
+    Haptics.selectionAsync().catch(() => {});
+    let out: { reply: string; step: string } | null = null;
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 12000);
+      const res = await fetch(REZ_URL, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        signal: ctrl.signal,
+        body: JSON.stringify({
+          dil: lang, fikir: idea.trim(), kalp: scores.kalp, beden: scores.beden, zihin: scores.zihin,
+          beden_yerleri: places, okuma: reading.title.replace(/\*/g, ''), soru: reading.question, cevap: a,
+        }),
+      });
+      clearTimeout(timer);
+      if (res.ok) {
+        const d = await res.json();
+        if (d?.yanit) out = { reply: d.yanit, step: d.adim ?? '' };
+      }
+    } catch {
+      // bağlantı yok ya da anahtar tanımlı değil: cihazda yanıt
+    }
+    setReply(out ?? localReply(a, lang));
+    setAsking(false);
   };
 
   return (
@@ -149,7 +193,7 @@ export function RezonansSheet({ visible, onClose }: { visible: boolean; onClose:
                 onPressOut={pressOut}
                 accessibilityRole="button"
                 accessibilityLabel={t('rez.orb')}
-                style={styles.orbHit}
+                style={[styles.orbHit, NO_SELECT]}
               >
                 <Orb progress={progress} size={280} />
               </Pressable>
@@ -232,6 +276,24 @@ export function RezonansSheet({ visible, onClose }: { visible: boolean; onClose:
                     })}
                   </View>
                   <Rich style={[type.body, { marginTop: S.lg }]}>{`*${reading.question}*`}</Rich>
+                  <TextInput value={answer} onChangeText={setAnswer} placeholder={t('rez.answerPh')} placeholderTextColor={C.inkMuted}
+                    multiline editable={!reply} style={[styles.input, { minHeight: 56 }]} />
+                  {!reply && (
+                    <Button label={asking ? t('rez.answering') : t('rez.answer')} onPress={respond}
+                      disabled={!answer.trim() || asking} style={{ marginTop: S.md }} />
+                  )}
+                  {!reply && <Text style={[type.small, { marginTop: S.sm }]}>{t('rez.aiNote')}</Text>}
+                  {reply && (
+                    <View style={styles.reply}>
+                      <Text style={[type.body, { color: C.ink }]}>{reply.reply}</Text>
+                      {!!reply.step && (
+                        <>
+                          <Text style={[styles.label, { marginTop: S.md }]}>{upper(t('rez.smallStep'))}</Text>
+                          <Text style={type.body}>{reply.step}</Text>
+                        </>
+                      )}
+                    </View>
+                  )}
                   {saved ? (
                     <Rich style={[type.body, { marginTop: S.xl, textAlign: 'center' }]}>{t('common.addedJournal')}</Rich>
                   ) : (
@@ -269,5 +331,6 @@ const styles = StyleSheet.create({
   place: { borderWidth: 1, borderColor: C.line, borderRadius: 999, paddingVertical: 6, paddingHorizontal: 14 },
   caption: { fontFamily: F.italic, fontSize: 22, color: C.ink, textAlign: 'center', marginTop: S.md },
   readRow: { flexDirection: 'row', gap: S.md, alignItems: 'flex-start' },
+  reply: { marginTop: S.lg, paddingLeft: S.md, borderLeftWidth: 2, borderColor: C.gold },
   readDot: { width: 10, height: 10, borderRadius: 5, marginTop: 6 },
 });

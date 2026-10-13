@@ -171,6 +171,11 @@ const TR = {
   'rez.note': 'Bu bir ölçüm değil; kendi iç sinyallerine kulak verme pratiği. Önemli kararlarda güvendiğin insanlara da danış.',
   'rez.again': 'Yeni bir fikir',
   'defter.kindRez': 'Rezonans',
+  'rez.answerPh': 'Cevabını yaz…',
+  'rez.answer': 'Cevapla',
+  'rez.answering': 'Dinliyorum…',
+  'rez.smallStep': 'Küçük bir adım',
+  'rez.aiNote': 'Yanıt için fikrin ve cevabın yapay zekâ servisine (Groq) gönderilir, saklanmaz. Bağlantı yoksa yanıt cihazda yazılır.',
 };
 
 export type Key = keyof typeof TR;
@@ -334,6 +339,11 @@ const EN: Record<Key, string> = {
   'rez.note': 'This is not a measurement; it is a practice of listening to your inner signals. For important decisions, talk with people you trust too.',
   'rez.again': 'A new idea',
   'defter.kindRez': 'Resonance',
+  'rez.answerPh': 'Write your answer…',
+  'rez.answer': 'Answer',
+  'rez.answering': 'Listening…',
+  'rez.smallStep': 'A small step',
+  'rez.aiNote': 'For the reply, your idea and answer are sent to an AI service (Groq) and not stored. Without a connection, the reply is written on your device.',
 };
 
 const DICT: Record<Lang, Record<Key, string>> = { tr: TR, en: EN };

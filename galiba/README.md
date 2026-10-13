@@ -44,3 +44,5 @@ Rapor `netlify/functions/haftalik.ts` üzerinden üretilir; API anahtarı uygula
 3. Mobil derlemede `EXPO_PUBLIC_REPORT_URL=https://<site>.netlify.app/api/haftalik` verilmeli.
 
 Yalnızca kullanıcı "Raporu yaz" dediğinde, o haftanın kısaltılmış kayıtları gönderilir.
+
+Rezonans'ta okumanın sorusuna verilen cevaba ikinci yanıt `netlify/functions/rezonans.ts` (`/api/rezonans`) ile aynı anahtardan gelir. Anahtar yoksa ya da bağlantı kurulamazsa yanıt cihazda kurallı olarak yazılır (`src/content/rezonansYanit.ts`).

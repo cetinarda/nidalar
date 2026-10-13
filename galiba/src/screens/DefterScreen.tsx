@@ -98,7 +98,7 @@ export function DefterScreen() {
               {!!e.bridge && <Rich style={[type.small, { marginTop: S.sm }]}>{`*${e.bridge}*`}</Rich>}
             </>
           ) : e.kind === 'rezonans' ? (
-            <RezItem idea={e.idea} scores={{ kalp: e.kalp, beden: e.beden, zihin: e.zihin }} />
+            <RezItem idea={e.idea} scores={{ kalp: e.kalp, beden: e.beden, zihin: e.zihin }} answer={e.answer} reply={e.reply} />
           ) : e.kind === 'nida' ? (
             <NidaItem passageId={e.passageId} reflection={e.reflection} />
           ) : (
@@ -129,7 +129,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function RezItem({ idea, scores }: { idea: string; scores: Scores }) {
+function RezItem({ idea, scores, answer, reply }: { idea: string; scores: Scores; answer?: string; reply?: string }) {
   const { lang } = useT();
   const v = VERDICTS[lang][readVerdict(scores)];
   return (
@@ -144,6 +144,8 @@ function RezItem({ idea, scores }: { idea: string; scores: Scores }) {
         ))}
       </View>
       <Rich style={[type.small, { marginTop: S.sm }]}>{v.title}</Rich>
+      {!!answer && <Text style={[type.body, { marginTop: S.sm }]}>{`${v.question} ${answer}`}</Text>}
+      {!!reply && <Text style={[type.small, { marginTop: S.xs }]}>{reply}</Text>}
     </>
   );
 }
