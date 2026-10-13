@@ -10,6 +10,8 @@ import { Entry, today, useStore } from '../store/useStore';
 import { weekSummary } from '../content/week';
 import { AynaDumbbells, CertaintyBars, PathProgress, WeekRitual } from '../components/Charts';
 import { ReportCard } from '../components/ReportCard';
+import { CHANNEL_COLOR } from '../components/Resonance';
+import { CHANNELS, readVerdict, Scores, VERDICTS } from '../content/rezonans';
 import { C, F, S, type, upper } from '../theme/tokens';
 import { localeOf, useT } from '../i18n';
 
@@ -84,7 +86,7 @@ export function DefterScreen() {
         <Pressable key={e.id} onLongPress={() => confirmRemove(e)} style={styles.entry}>
           <Text style={styles.meta}>
             {upper(`${fmt(e.date)}  ·  ${
-              e.kind === 'ayna' ? t('defter.kindAyna') : e.kind === 'nida' ? t('defter.kindNida') : RITUAL[lang].find(r => r.key === e.step)?.title.replace(/\*/g, '') ?? ''
+              e.kind === 'ayna' ? t('defter.kindAyna') : e.kind === 'nida' ? t('defter.kindNida') : e.kind === 'rezonans' ? t('defter.kindRez') : RITUAL[lang].find(r => r.key === e.step)?.title.replace(/\*/g, '') ?? ''
             }`)}
           </Text>
           {e.kind === 'ayna' ? (
@@ -95,6 +97,8 @@ export function DefterScreen() {
               </View>
               {!!e.bridge && <Rich style={[type.small, { marginTop: S.sm }]}>{`*${e.bridge}*`}</Rich>}
             </>
+          ) : e.kind === 'rezonans' ? (
+            <RezItem idea={e.idea} scores={{ kalp: e.kalp, beden: e.beden, zihin: e.zihin }} />
           ) : e.kind === 'nida' ? (
             <NidaItem passageId={e.passageId} reflection={e.reflection} />
           ) : (
@@ -122,6 +126,25 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <Text style={styles.sectionTitle}>{upper(title)}</Text>
       {children}
     </View>
+  );
+}
+
+function RezItem({ idea, scores }: { idea: string; scores: Scores }) {
+  const { lang } = useT();
+  const v = VERDICTS[lang][readVerdict(scores)];
+  return (
+    <>
+      <Text style={[type.body, { color: C.ink, marginTop: S.xs }]}>“{idea}”</Text>
+      <View style={{ flexDirection: 'row', gap: S.md, marginTop: S.sm }}>
+        {(['kalp', 'beden', 'zihin'] as const).map((k, i) => (
+          <View key={k} style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: CHANNEL_COLOR[k] }} />
+            <Text style={type.small}>{`${CHANNELS[lang][i].name} ${scores[k] > 0 ? '+' : ''}${scores[k]}`}</Text>
+          </View>
+        ))}
+      </View>
+      <Rich style={[type.small, { marginTop: S.sm }]}>{v.title}</Rich>
+    </>
   );
 }
 

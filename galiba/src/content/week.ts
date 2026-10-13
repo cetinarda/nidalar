@@ -24,6 +24,7 @@ export function weekSummary(entries: Entry[], now = new Date(), lang: Lang = 'tr
   const aynas = inWeek.flatMap(e => (e.kind === 'ayna' ? [e] : []));
   const rituals = inWeek.flatMap(e => (e.kind === 'ritual' ? [e] : []));
   const nidas = inWeek.flatMap(e => (e.kind === 'nida' ? [e] : []));
+  const rezonanslar = inWeek.flatMap(e => (e.kind === 'rezonans' ? [e] : []));
 
   const ritualByDay = days.map(day => new Set(rituals.filter(r => r.date === day).map(r => r.step)).size);
 
@@ -45,7 +46,7 @@ export function weekSummary(entries: Entry[], now = new Date(), lang: Lang = 'tr
   }
   const words = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3);
 
-  return { lang, days, weekKey: days[0], inWeek, aynas, rituals, nidas, ritualByDay, avgDelta, words };
+  return { lang, days, weekKey: days[0], inWeek, aynas, rituals, nidas, ritualByDay, avgDelta, words, rezonanslar };
 }
 
 export type WeekSummary = ReturnType<typeof weekSummary>;
@@ -71,6 +72,13 @@ export function reportPayload(w: WeekSummary) {
     rituel: w.rituals.slice(0, 28).filter(r => r.text).map(r => ({
       adim: RITUAL[w.lang].find(s => s.key === r.step)?.title.replace(/\*/g, '') ?? r.step,
       cevap: cut(r.text, 300),
+    })),
+    rezonanslar: w.rezonanslar.slice(0, 7).map(r => ({
+      fikir: cut(r.idea, 200),
+      kalp: r.kalp,
+      beden: r.beden,
+      zihin: r.zihin,
+      beden_yerleri: r.places,
     })),
     nidalar: w.nidas.slice(0, 7).map(n => ({
       soz: cut(passageById(n.passageId, w.lang)?.text ?? '', 300),

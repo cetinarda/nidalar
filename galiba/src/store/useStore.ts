@@ -22,7 +22,18 @@ export type NidaEntry = {
   intention: string;
   reflection: string;
 };
-export type Entry = RitualEntry | AynaEntry | NidaEntry;
+export type RezonansEntry = {
+  kind: 'rezonans';
+  id: string;
+  date: string;
+  idea: string;
+  kalp: number;
+  beden: number;
+  zihin: number;
+  places: string[];
+  verdict: string;
+};
+export type Entry = RitualEntry | AynaEntry | NidaEntry | RezonansEntry;
 
 export type WeeklyReport = {
   baslik: string;
@@ -102,6 +113,10 @@ export function useGalibaState() {
     update(s => ({ ...s, entries: [{ ...e, kind: 'nida', id: uid(), date: today() }, ...s.entries] }));
   }, [update]);
 
+  const saveRezonans = useCallback((e: Omit<RezonansEntry, 'kind' | 'id' | 'date'>) => {
+    update(s => ({ ...s, entries: [{ ...e, kind: 'rezonans', id: uid(), date: today() }, ...s.entries] }));
+  }, [update]);
+
   const saveReport = useCallback((weekKey: string, r: WeeklyReport) => {
     update(s => ({ ...s, reports: { ...s.reports, [weekKey]: r } }));
   }, [update]);
@@ -134,8 +149,8 @@ export function useGalibaState() {
   }, [update]);
 
   return useMemo(
-    () => ({ ...state, lang: (state.lang ?? detected) as Lang, setLang, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove }),
-    [state, ready, saveRitual, saveAyna, saveNida, saveReport, saveGame, toggleDay, markEsikSeen, remove, setLang],
+    () => ({ ...state, lang: (state.lang ?? detected) as Lang, setLang, ready, saveRitual, saveAyna, saveNida, saveRezonans, saveReport, saveGame, toggleDay, markEsikSeen, remove }),
+    [state, ready, saveRitual, saveAyna, saveNida, saveRezonans, saveReport, saveGame, toggleDay, markEsikSeen, remove, setLang],
   );
 }
 

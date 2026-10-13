@@ -15,6 +15,7 @@ Türkçe ve İngilizce. İlk açılışta cihaz dili seçilir; Eşik serisinin �
 - **Bugün**: günün sayıları, günün fikri, dört adımlı ritüel ve Nida
 - **Nida**: Nidalar'dan gelen söz çekme ritüeli (9 gelenek, 72 söz); söz geldikten sonra "Bu söz sana hangi ihtimali hatırlatıyor?" diye sorar. Söz, kullanıcının niyetine, bugünkü düşüncesine ve bu haftaki aynalarına göre cihazda seçilir (`src/content/nida.ts`)
 - **Işık Yolu** (oyun): yıldızlar nefes ritminde sırayla yanar, kullanıcı aynı yolu çizer. Süre, puan ve kaybetme yok; yol hatasız turda uzar, zorlanınca kısalır; beşten sonra bazı turlar tersinden. 7 tur, ~3 dakika (`src/content/oyun.ts`)
+- **Rezonans**: bir fikir yazılır, gizemli küreye 7 sn basılı tutulur (odaklanma ritüeli; ölçüm değildir), kalp, beden ve zihin ayrı ayrı sorulur, üç ışık tek noktada birleşir ve uyuma göre bir okuma çıkar (`src/content/rezonans.ts`)
 - **Ayna**: İhtimal Aynası; kesinlik dedektörü, önce/sonra inanç oranı, köprü cümle
 - **Yol**: 21 günlük program
 - **Defter**: bu haftanın infografikleri (ritüel, ayna önce/sonra, kesinlik kelimeleri, yol), haftalık rapor ve yalnızca cihazda saklanan kayıtlar

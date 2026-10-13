@@ -133,7 +133,7 @@ function stonesFrame(t?: number): { active: number; fade: number } {
 }
 
 // requestAnimationFrame ile döngü; reduce motion açıksa durur.
-function useLoop(ms: number, enabled: boolean) {
+export function useLoop(ms: number, enabled: boolean) {
   const [t, setT] = useState<number | undefined>(undefined);
   useEffect(() => {
     if (!enabled) return;

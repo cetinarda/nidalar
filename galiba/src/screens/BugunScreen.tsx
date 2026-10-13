@@ -9,6 +9,7 @@ import { Button, Eyebrow } from '../components/ui';
 import { RITUAL, RitualStep } from '../content/ritual';
 import { NidaSheet } from './NidaSheet';
 import { OyunSheet } from './OyunSheet';
+import { RezonansSheet } from './RezonansSheet';
 import { PROGRAM } from '../content/program';
 import { today, useStore } from '../store/useStore';
 import { C, F, S, type } from '../theme/tokens';
@@ -27,6 +28,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
   const [open, setOpen] = useState<RitualStep | null>(null);
   const [nida, setNida] = useState(false);
   const [oyun, setOyun] = useState(false);
+  const [rez, setRez] = useState(false);
 
   const todays = entries.filter(e => e.kind === 'ritual' && e.date === today());
   const doneSteps = new Set(todays.map(e => (e.kind === 'ritual' ? e.step : '')));
@@ -74,7 +76,14 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
           </Rich>
         )}
 
-        <Pressable onPress={() => setNida(true)} style={({ pressed }) => [styles.nida, pressed && { opacity: 0.6 }]}
+        <Pressable onPress={() => setRez(true)} style={({ pressed }) => [styles.nida, pressed && { opacity: 0.6 }]}
+          accessibilityRole="button">
+          <Eyebrow>{t('bugun.rez')}</Eyebrow>
+          <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{t('bugun.rezTitle')}</Rich>
+          <Text style={[type.small, { marginTop: 2 }]}>{t('bugun.rezSub')}</Text>
+        </Pressable>
+
+        <Pressable onPress={() => setNida(true)} style={({ pressed }) => [styles.oyun, pressed && { opacity: 0.6 }]}
           accessibilityRole="button">
           <Eyebrow>{t('bugun.nida')}</Eyebrow>
           <Rich style={[styles.stepTitle, { marginTop: S.xs }]}>{t('bugun.nidaTitle')}</Rich>
@@ -98,6 +107,7 @@ export function BugunScreen({ onOpenEsik }: { onOpenEsik: () => void }) {
       <RitualSheet step={open} onClose={() => setOpen(null)} />
       <NidaSheet visible={nida} onClose={() => setNida(false)} />
       <OyunSheet visible={oyun} onClose={() => setOyun(false)} />
+      <RezonansSheet visible={rez} onClose={() => setRez(false)} />
     </View>
   );
 }
